@@ -29,11 +29,18 @@ def agent_mode() -> str:
     return os.getenv("BASELINE_AGENT", "heuristic").strip().lower()
 
 
-def google_genai_api_key() -> str:
-    api_key = os.getenv("GOOGLE_GENAI_API_KEY")
-    if not api_key:
-        raise RuntimeError("GOOGLE_GENAI_API_KEY is required for BASELINE_AGENT=google_genai.")
-    return api_key
+def api_base_url() -> str:
+    url = os.getenv("API_BASE_URL")
+    if not url:
+        raise RuntimeError("API_BASE_URL is required for BASELINE_AGENT=agent.")
+    return url
+
+
+def api_key() -> str:
+    key = os.getenv("HF_TOKEN")
+    if not key:
+        raise RuntimeError("HF_TOKEN is required for BASELINE_AGENT=agent.")
+    return key
 
 
 def model_name() -> str:
@@ -44,14 +51,8 @@ def model_name() -> str:
 
 
 def build_client() -> Any:
-    try:
-        from google import genai
-    except ImportError as exc:  # pragma: no cover - depends on optional package
-        raise RuntimeError(
-            "google-genai is required for BASELINE_AGENT=google_genai. Install it with `pip install -U google-genai`."
-        ) from exc
-
-    return genai.Client(api_key=google_genai_api_key())
+    from openai import OpenAI
+    return OpenAI(base_url=api_base_url(), api_key=api_key())
 
 
 def prompt_from_observation(observation: Any) -> str:
@@ -78,21 +79,11 @@ def prompt_from_observation(observation: Any) -> str:
 
 
 def _extract_response_text(response: Any) -> str:
-    text = getattr(response, "text", None)
-    if isinstance(text, str) and text.strip():
-        return text.strip()
-
-    candidates = getattr(response, "candidates", None) or []
-    parts: list[str] = []
-    for candidate in candidates:
-        content = getattr(candidate, "content", None)
-        if content is None:
-            continue
-        for part in getattr(content, "parts", []) or []:
-            part_text = getattr(part, "text", None)
-            if part_text:
-                parts.append(part_text)
-    return "".join(parts).strip()
+    """Extract text content from an OpenAI ChatCompletion response."""
+    try:
+        return response.choices[0].message.content.strip()
+    except (IndexError, AttributeError):
+        return ""
 
 
 def _tokenize(text: str) -> set[str]:
@@ -100,7 +91,15 @@ def _tokenize(text: str) -> set[str]:
 
 
 def choose_action_with_llm(client: Any, model: str, observation: Any) -> str:
-    response = client.models.generate_content(model=model, contents=prompt_from_observation(observation))
+    prompt = prompt_from_observation(observation)
+    response = client.chat.completions.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": "You are a web navigation agent. Respond only with valid JSON."},
+            {"role": "user", "content": prompt},
+        ],
+        temperature=0.0,
+    )
     text = _extract_response_text(response)
     try:
         payload = json.loads(text)
@@ -141,11 +140,11 @@ def choose_action_with_heuristic(observation: Any) -> str:
 def choose_action(agent: Any, model: str | None, observation: Any, mode: str) -> str:
     if mode == "heuristic":
         return choose_action_with_heuristic(observation)
-    if mode == "google_genai":
+    if mode == "agent":
         if agent is None or model is None:
             return "__invalid_json__"
         return choose_action_with_llm(agent, model, observation)
-    raise ValueError(f"Unsupported BASELINE_AGENT '{mode}'. Expected 'heuristic' or 'google_genai'.")
+    raise ValueError(f"Unsupported BASELINE_AGENT '{mode}'. Expected 'heuristic' or 'agent'.")
 
 
 def run_task(agent: Any, model: str | None, task_id: str, mode: str | None = None) -> dict[str, Any]:
@@ -167,12 +166,11 @@ def run_task(agent: Any, model: str | None, task_id: str, mode: str | None = Non
 
 
 def main() -> None:
-    os.getenv("HF_TOKEN")
     selected_mode = agent_mode()
-    selected_model = model_name() if selected_mode == "google_genai" else "heuristic-semantic-baseline"
-    agent = build_client() if selected_mode == "google_genai" else None
+    selected_model = model_name() if selected_mode == "agent" else "heuristic-semantic-baseline"
+    agent = build_client() if selected_mode == "agent" else None
 
-    results = [run_task(agent, selected_model if selected_mode == "google_genai" else None, task_id, mode=selected_mode) for task_id in list_task_ids()]
+    results = [run_task(agent, selected_model if selected_mode == "agent" else None, task_id, mode=selected_mode) for task_id in list_task_ids()]
     aggregate = round(sum(result["score"] for result in results) / len(results), 4)
 
     report = {

@@ -1,4 +1,4 @@
-﻿# Navis Web Env
+# Navis Web Env
 
 Navis Web Env is a deterministic OpenEnv environment for training and evaluating web-navigation agents on a realistic but fully controlled task: moving through mock websites to reach a target page.
 
@@ -107,37 +107,26 @@ Grader-facing episode summaries include:
 Install dependencies:
 
 ```bash
-cd envs/navis_web_env
 pip install -e .
 ```
 
-If you only need the optional Google baseline dependency, install:
+Or using uv:
 
 ```bash
-pip install -U google-genai
+uv sync
 ```
 
 Run the server locally:
 
 ```bash
-uv run --project . server --host 0.0.0.0 --port 8000
-```
-
-Or with uvicorn:
-
-```bash
-cd envs/navis_web_env
-uvicorn server.app:app --host 0.0.0.0 --port 8000
+uv run uvicorn navis_web_env.server.app:app --host 0.0.0.0 --port 8000
 ```
 
 For the fallback plain-HTTP path, `POST /reset` now returns a `session_id`. Subsequent `POST /step` and `GET /state` calls should include that `session_id` so episode state is preserved even when requests are handled independently.
 
 ## OpenEnv Validation
 
-From the environment directory:
-
 ```bash
-cd envs/navis_web_env
 openenv validate --verbose
 ```
 
@@ -152,44 +141,44 @@ pip install "openenv-core[core]"
 Build:
 
 ```bash
-cd envs/navis_web_env
 openenv build
 ```
 
 Run directly with Docker:
 
 ```bash
-docker build -f server/Dockerfile -t navis-web-env .
+docker build -t navis-web-env .
 docker run -p 8000:8000 navis-web-env
 ```
 
 ## Baseline Inference
 
-The hackathon baseline script is at the repo root as [`inference.py`](../../inference.py). It supports two agent modes:
+The hackathon baseline script is at the repo root as [`inference.py`](./inference.py). It supports two agent modes:
 
 - `heuristic` (default): no LLM calls, uses token overlap / semantic similarity between the goal and available links
-- `google_genai`: uses `google-genai` with `genai.Client(api_key=...)`
+- `agent`: uses the OpenAI-compatible client with `API_BASE_URL`, `MODEL_NAME`, and `HF_TOKEN`
 
-Environment variables:
+Environment variables (configured via `.env`):
 
-- `BASELINE_AGENT=heuristic` or `BASELINE_AGENT=google_genai`
-- `MODEL_NAME` only needed for `google_genai`
-- `GOOGLE_GENAI_API_KEY` only needed for `google_genai`
-- `HF_TOKEN` optional for submission workflows
+- `BASELINE_AGENT=heuristic` or `BASELINE_AGENT=agent`
+- `API_BASE_URL` — the LLM API endpoint (only needed for `agent` mode)
+- `MODEL_NAME` — the model identifier (only needed for `agent` mode)
+- `HF_TOKEN` — your API key (only needed for `agent` mode)
 
 Example heuristic run:
 
 ```bash
-set BASELINE_AGENT=heuristic
 python inference.py
 ```
 
-Example Google GenAI run:
+Example LLM agent run:
 
 ```bash
-set BASELINE_AGENT=google_genai
-set GOOGLE_GENAI_API_KEY=...
-set MODEL_NAME=gemini-2.0-flash
+# Set in .env or export:
+# BASELINE_AGENT=agent
+# API_BASE_URL=https://api.openai.com/v1
+# MODEL_NAME=gpt-4o-mini
+# HF_TOKEN=sk-...
 python inference.py
 ```
 

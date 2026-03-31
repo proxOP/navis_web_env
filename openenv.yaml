@@ -3,14 +3,14 @@ slug: navis_web_env
 version: 0.1.0
 description: Deterministic mock website navigation environment for evaluating web agents with OpenEnv.
 entrypoints:
-  app: server.app:app
-  client: client:NavisWebEnv
+  app: navis_web_env.server.app:app
+  client: navis_web_env.client:NavisWebEnv
 models:
-  action: models:NavisWebAction
-  observation: models:NavisWebObservation
-  state: models:NavisWebState
+  action: navis_web_env.models:NavisWebAction
+  observation: navis_web_env.models:NavisWebObservation
+  state: navis_web_env.models:NavisWebState
 docker:
-  dockerfile: server/Dockerfile
+  dockerfile: Dockerfile
 tags:
   - openenv
   - web-navigation
