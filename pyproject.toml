@@ -18,10 +18,10 @@ dependencies = [
 ]
 
 [project.scripts]
-server = "server.app:main"
+server = "navis_web_env.server.app:main"
 
 [tool.setuptools]
 include-package-data = true
 
 [tool.setuptools.packages.find]
-include = ["navis_web_env*", "server*"]
+include = ["navis_web_env*"]

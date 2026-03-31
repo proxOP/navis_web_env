@@ -1,4 +1,4 @@
-﻿"""Baseline inference runner for the Navis OpenEnv hackathon submission."""
+"""Baseline inference runner for the Navis OpenEnv hackathon submission."""
 
 from __future__ import annotations
 
@@ -10,10 +10,10 @@ from typing import Any
 
 from dotenv import load_dotenv
 
-from envs.navis_web_env.navis_web_env.grading import grade_episode
-from envs.navis_web_env.navis_web_env.models import NavisWebAction
-from envs.navis_web_env.navis_web_env.server.navis_web_environment import NavisWebEnvironment
-from envs.navis_web_env.navis_web_env.site_loader import list_task_ids
+from navis_web_env.grading import grade_episode
+from navis_web_env.models import NavisWebAction
+from navis_web_env.server.navis_web_environment import NavisWebEnvironment
+from navis_web_env.site_loader import list_task_ids
 
 load_dotenv()
 

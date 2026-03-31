@@ -1,4 +1,4 @@
-﻿"""Tests for the Navis deterministic web environment."""
+"""Tests for the Navis deterministic web environment."""
 
 from __future__ import annotations
 
@@ -9,9 +9,9 @@ ROOT = os.path.join(os.path.dirname(__file__), "..")
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from envs.navis_web_env.navis_web_env.grading import grade_episode
-from envs.navis_web_env.navis_web_env.models import NavisWebAction
-from envs.navis_web_env.navis_web_env.server.navis_web_environment import NavisWebEnvironment
+from navis_web_env.grading import grade_episode
+from navis_web_env.models import NavisWebAction
+from navis_web_env.server.navis_web_environment import NavisWebEnvironment
 
 
 def test_reset_returns_expected_initial_observation_for_each_task():
