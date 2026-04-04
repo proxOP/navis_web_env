@@ -155,30 +155,27 @@ docker run -p 8000:8000 navis-web-env
 
 The hackathon baseline script is at the repo root as [`inference.py`](./inference.py). It supports two agent modes:
 
-- `heuristic` (default): no LLM calls, uses token overlap / semantic similarity between the goal and available links
-- `agent`: uses the OpenAI-compatible client with `API_BASE_URL`, `MODEL_NAME`, and `HF_TOKEN`
+- `agent` (default): uses the OpenAI-compatible client with `API_BASE_URL`, `MODEL_NAME`, and `HF_TOKEN`
+- `heuristic`: optional fallback mode using token overlap / semantic similarity between the goal and available links
 
 Environment variables (configured via `.env`):
 
-- `BASELINE_AGENT=heuristic` or `BASELINE_AGENT=agent`
+- `BASELINE_AGENT=agent` or `BASELINE_AGENT=heuristic`
 - `API_BASE_URL` — the LLM API endpoint (only needed for `agent` mode)
 - `MODEL_NAME` — the model identifier (only needed for `agent` mode)
 - `HF_TOKEN` — your API key (only needed for `agent` mode)
 
-Example heuristic run:
+Example default LLM agent run:
 
 ```bash
 python inference.py
 ```
 
-Example LLM agent run:
+Example heuristic run:
 
 ```bash
 # Set in .env or export:
-# BASELINE_AGENT=agent
-# API_BASE_URL=https://api.openai.com/v1
-# MODEL_NAME=gpt-4o-mini
-# HF_TOKEN=sk-...
+# BASELINE_AGENT=heuristic
 python inference.py
 ```
 

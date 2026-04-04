@@ -23,10 +23,12 @@ STOPWORDS = {
     "a", "an", "and", "are", "as", "at", "be", "by", "for", "from", "how", "i", "in", "into",
     "is", "it", "of", "on", "or", "page", "reach", "site", "that", "the", "this", "to", "you", "your"
 }
+MAX_STEPS_FALLBACK = 20
+BENCHMARK_NAME = "navis_web_env"
 
 
 def agent_mode() -> str:
-    return os.getenv("BASELINE_AGENT", "heuristic").strip().lower()
+    return os.getenv("BASELINE_AGENT", "agent").strip().lower()
 
 
 def api_base_url() -> str:
@@ -55,6 +57,25 @@ def build_client() -> Any:
     return OpenAI(base_url=api_base_url(), api_key=api_key())
 
 
+def log_start(task: str, env: str, model: str) -> None:
+    print(f"[START] task={task} env={env} model={model}", flush=True)
+
+
+def log_step(step: int, action: str, reward: float, done: bool, error: str | None) -> None:
+    action_text = action.replace("\n", "\\n")
+    error_text = (error or "none").replace("\n", "\\n")
+    print(
+        f"[STEP] step={step} action={action_text} reward={reward:.3f} "
+        f"done={str(done).lower()} error={error_text}",
+        flush=True,
+    )
+
+
+def log_end(success: bool, steps: int, score: float, rewards: list[float]) -> None:
+    rewards_str = ",".join(f"{reward:.2f}" for reward in rewards)
+    print(f"[END] success={str(success).lower()} steps={steps} score={score:.3f} rewards={rewards_str}", flush=True)
+
+
 def prompt_from_observation(observation: Any) -> str:
     link_lines = []
     for link in observation.available_links:
@@ -79,7 +100,6 @@ def prompt_from_observation(observation: Any) -> str:
 
 
 def _extract_response_text(response: Any) -> str:
-    """Extract text content from an OpenAI ChatCompletion response."""
     try:
         return response.choices[0].message.content.strip()
     except (IndexError, AttributeError):
@@ -149,15 +169,37 @@ def choose_action(agent: Any, model: str | None, observation: Any, mode: str) ->
 
 def run_task(agent: Any, model: str | None, task_id: str, mode: str | None = None) -> dict[str, Any]:
     selected_mode = mode or agent_mode()
+    model_label = model or "heuristic-semantic-baseline"
     env = NavisWebEnvironment(default_task_id=task_id)
     observation = env.reset(task_id=task_id)
+    rewards: list[float] = []
+    steps_taken = 0
+
+    log_start(task=task_id, env=BENCHMARK_NAME, model=model_label)
 
     while not observation.done:
         click_link_id = choose_action(agent, model, observation, selected_mode)
+        action_error = None if click_link_id != "__invalid_json__" else "invalid_action"
         observation = env.step(NavisWebAction(click_link_id=click_link_id))
+        reward = float(observation.reward or 0.0)
+        rewards.append(reward)
+        steps_taken += 1
+        log_step(
+            step=steps_taken,
+            action=click_link_id,
+            reward=reward,
+            done=observation.done,
+            error=action_error,
+        )
 
     summary = env.get_last_info()
     score = grade_episode(summary)
+    log_end(
+        success=bool(summary.get("reached_target")),
+        steps=steps_taken,
+        score=score,
+        rewards=rewards,
+    )
     return {
         "task_id": task_id,
         "score": score,
@@ -182,16 +224,6 @@ def main() -> None:
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(json.dumps(report, indent=2), encoding="utf-8")
-
-    for result in results:
-        print(
-            f"{result['task_id']}: score={result['score']} "
-            f"steps={result['summary']['actual_steps']} "
-            f"invalid={result['summary']['invalid_actions']} "
-            f"path={' -> '.join(result['summary']['path'])}"
-        )
-    print(f"agent_mode={selected_mode}")
-    print(f"aggregate_score={aggregate}")
 
 
 if __name__ == "__main__":

@@ -23,7 +23,6 @@ class NavisWebEnv(EnvClient[NavisWebAction, NavisWebObservation, NavisWebState])
             observation=observation,
             reward=payload.get("reward"),
             done=payload.get("done", False),
-            info=payload.get("info"),
         )
 
     def _parse_state(self, payload: dict[str, Any]) -> NavisWebState:
