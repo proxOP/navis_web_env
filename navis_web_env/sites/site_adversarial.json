@@ -1,0 +1,165 @@
+{
+  "task_id": "adversarial",
+  "goal_instruction": "You are on the Rivermark City Services portal. Reach the After-Hours Utility Shutoff Reversal Form page.",
+  "start_page_id": "city_home",
+  "target_page_id": "after_hours_shutoff_reversal_form",
+  "max_steps": 13,
+  "distractor_taxonomy": ["emergency outage decoys", "utility billing lookalikes", "resident-service loops", "near-target restoration pages"],
+  "pages": {
+    "city_home": {
+      "title": "Rivermark City Services",
+      "text": "Rivermark City Services helps residents manage utilities, permits, emergency requests, and account support.",
+      "links": [
+        {"link_id": "city_utilities", "label": "Utilities", "href_slug": "/utilities", "role": "link", "aria_label": "Open utility services", "preview_text": "Billing, service interruptions, meter issues, and utility forms.", "destination_page_id": "utilities"},
+        {"link_id": "city_resident_help", "label": "Resident Help Center", "href_slug": "/resident-help", "role": "link", "aria_label": "Open resident help center", "preview_text": "General city help, service requests, and account support.", "destination_page_id": "resident_help_center"},
+        {"link_id": "city_emergency", "label": "Emergency Updates", "href_slug": "/emergency", "role": "link", "aria_label": "Open emergency updates", "preview_text": "Outages, storm updates, and emergency service notices.", "destination_page_id": "emergency_updates"}
+      ]
+    },
+    "utilities": {
+      "title": "Utilities",
+      "text": "Utilities supports billing, shutoff prevention, restoration requests, outage status, and utility account forms.",
+      "links": [
+        {"link_id": "utilities_service_interruptions", "label": "Service Interruptions", "href_slug": "/utilities/service-interruptions", "role": "link", "aria_label": "Open service interruptions", "preview_text": "Shutoffs, restorations, and interruption policies.", "destination_page_id": "service_interruptions"},
+        {"link_id": "utilities_billing", "label": "Billing and Payments", "href_slug": "/utilities/billing", "role": "link", "aria_label": "Open billing and payments", "preview_text": "Bills, payment plans, and due date questions.", "destination_page_id": "billing_and_payments"},
+        {"link_id": "utilities_forms", "label": "Utility Forms Library", "href_slug": "/utilities/forms", "role": "link", "aria_label": "Open utility forms library", "preview_text": "Applications, requests, and utility-related forms.", "destination_page_id": "utility_forms_library"}
+      ]
+    },
+    "service_interruptions": {
+      "title": "Service Interruptions",
+      "text": "Service Interruption resources cover planned shutoffs, emergency restorations, payment-related disconnections, and after-hours access help.",
+      "links": [
+        {"link_id": "interruptions_restoration", "label": "Restoration and Reconnection", "href_slug": "/utilities/service-interruptions/restoration", "role": "link", "aria_label": "Open restoration and reconnection", "preview_text": "Reconnect service after disconnection or repair.", "destination_page_id": "restoration_reconnection"},
+        {"link_id": "interruptions_outage_map", "label": "Outage Map", "href_slug": "/emergency/outage-map", "role": "link", "aria_label": "Open outage map", "preview_text": "View current outage areas and utility crews.", "destination_page_id": "outage_map"},
+        {"link_id": "interruptions_forms", "label": "Utility Forms Library", "href_slug": "/utilities/forms", "role": "link", "aria_label": "Open utility forms library", "preview_text": "Browse all utility service forms.", "destination_page_id": "utility_forms_library"}
+      ]
+    },
+    "restoration_reconnection": {
+      "title": "Restoration and Reconnection",
+      "text": "Use Restoration and Reconnection for scheduled reconnects, emergency restoration, after-hours shutoff reversals, and service reactivation requests.",
+      "links": [
+        {"link_id": "restoration_emergency", "label": "Emergency Restoration", "href_slug": "/utilities/service-interruptions/restoration/emergency", "role": "link", "aria_label": "Open emergency restoration", "preview_text": "Critical restoration workflows for urgent cases and after-hours shutoffs.", "destination_page_id": "emergency_restoration"},
+        {"link_id": "restoration_standard", "label": "Standard Reconnection Request", "href_slug": "/utilities/service-interruptions/restoration/standard", "role": "link", "aria_label": "Open standard reconnection request", "preview_text": "Routine business-hours reconnection workflow.", "destination_page_id": "standard_reconnection_request"},
+        {"link_id": "restoration_billing", "label": "Billing and Payments", "href_slug": "/utilities/billing", "role": "link", "aria_label": "Open billing and payments", "preview_text": "Resolve payment holds before requesting restoration.", "destination_page_id": "billing_and_payments"}
+      ]
+    },
+    "emergency_restoration": {
+      "title": "Emergency Restoration",
+      "text": "Emergency Restoration includes outage restoration procedures, life-safety restoration requests, and after-hours shutoff reversal intake.",
+      "links": [
+        {"link_id": "emergency_restoration_after_hours", "label": "After-Hours Reversal Requests", "href_slug": "/utilities/service-interruptions/restoration/emergency/after-hours", "role": "link", "aria_label": "Open after-hours reversal requests", "preview_text": "After-hours shutoff reversal requests and supporting forms.", "destination_page_id": "after_hours_reversal_requests"},
+        {"link_id": "emergency_restoration_life_safety", "label": "Life-Safety Restoration", "href_slug": "/utilities/service-interruptions/restoration/emergency/life-safety", "role": "link", "aria_label": "Open life-safety restoration", "preview_text": "Critical restoration requests for medical or safety need.", "destination_page_id": "life_safety_restoration"},
+        {"link_id": "emergency_restoration_outages", "label": "Storm and Outage Recovery", "href_slug": "/emergency/outage-recovery", "role": "link", "aria_label": "Open storm and outage recovery", "preview_text": "Large-scale outage restoration updates.", "destination_page_id": "storm_outage_recovery"}
+      ]
+    },
+    "after_hours_reversal_requests": {
+      "title": "After-Hours Reversal Requests",
+      "text": "After-hours reversal requests include after-hours utility shutoff reversal forms, supervisor contact rules, and urgent reconnect guidance.",
+      "links": [
+        {"link_id": "after_hours_form", "label": "After-Hours Utility Shutoff Reversal Form", "href_slug": "/utilities/service-interruptions/restoration/emergency/after-hours/form", "role": "link", "aria_label": "Open after-hours utility shutoff reversal form", "preview_text": "Form for urgent after-hours shutoff reversal requests.", "destination_page_id": "after_hours_shutoff_reversal_form"},
+        {"link_id": "after_hours_checklist", "label": "After-Hours Eligibility Checklist", "href_slug": "/utilities/service-interruptions/restoration/emergency/after-hours/checklist", "role": "link", "aria_label": "Open after-hours eligibility checklist", "preview_text": "Checklist to confirm a household qualifies for reversal review.", "destination_page_id": "after_hours_eligibility_checklist"},
+        {"link_id": "after_hours_emergency_restoration", "label": "Emergency Restoration", "href_slug": "/utilities/service-interruptions/restoration/emergency", "role": "link", "aria_label": "Return to emergency restoration", "preview_text": "Back to emergency restoration overview.", "destination_page_id": "emergency_restoration"}
+      ]
+    },
+    "resident_help_center": {
+      "title": "Resident Help Center",
+      "text": "The Resident Help Center covers general city support, case intake, service request routing, and account contact updates.",
+      "links": [
+        {"link_id": "resident_help_accounts", "label": "Account Support", "href_slug": "/resident-help/account-support", "role": "link", "aria_label": "Open account support", "preview_text": "Profile updates, resident login help, and contact preferences.", "destination_page_id": "account_support"},
+        {"link_id": "resident_help_utilities", "label": "Utilities", "href_slug": "/utilities", "role": "link", "aria_label": "Open utility services", "preview_text": "Go to utility billing, interruptions, and forms.", "destination_page_id": "utilities"}
+      ]
+    },
+    "emergency_updates": {
+      "title": "Emergency Updates",
+      "text": "Emergency updates includes storm alerts, utility outages, road closures, and large-scale restoration notices.",
+      "links": [
+        {"link_id": "emergency_outage_map", "label": "Outage Map", "href_slug": "/emergency/outage-map", "role": "link", "aria_label": "Open outage map", "preview_text": "Current utility outage areas and estimated restoration times.", "destination_page_id": "outage_map"},
+        {"link_id": "emergency_home", "label": "City Services Home", "href_slug": "/", "role": "link", "aria_label": "Return to city services home", "preview_text": "Back to Rivermark City Services.", "destination_page_id": "city_home"}
+      ]
+    },
+    "billing_and_payments": {
+      "title": "Billing and Payments",
+      "text": "Billing and Payments covers utility balances, payment plans, auto-pay, and payment-related service holds.",
+      "links": [
+        {"link_id": "billing_payment_plan", "label": "Payment Plan Request", "href_slug": "/utilities/billing/payment-plan", "role": "link", "aria_label": "Open payment plan request", "preview_text": "Set up or modify a utility payment plan.", "destination_page_id": "payment_plan_request"},
+        {"link_id": "billing_utilities", "label": "Utilities", "href_slug": "/utilities", "role": "link", "aria_label": "Return to utilities", "preview_text": "Back to utility services overview.", "destination_page_id": "utilities"}
+      ]
+    },
+    "utility_forms_library": {
+      "title": "Utility Forms Library",
+      "text": "Browse forms for transfers, reconnects, leak adjustments, and service interruption requests.",
+      "links": [
+        {"link_id": "forms_reconnection", "label": "Reconnection Forms", "href_slug": "/utilities/forms/reconnection", "role": "link", "aria_label": "Open reconnection forms", "preview_text": "Forms for service reactivation and reconnection.", "destination_page_id": "reconnection_forms"},
+        {"link_id": "forms_utilities_home", "label": "Utilities", "href_slug": "/utilities", "role": "link", "aria_label": "Return to utilities", "preview_text": "Back to utilities overview.", "destination_page_id": "utilities"}
+      ]
+    },
+    "outage_map": {
+      "title": "Outage Map",
+      "text": "Map of active utility outages and estimated restoration times.",
+      "links": [
+        {"link_id": "outage_emergency_updates", "label": "Emergency Updates", "href_slug": "/emergency", "role": "link", "aria_label": "Return to emergency updates", "preview_text": "Back to emergency updates and notices.", "destination_page_id": "emergency_updates"}
+      ]
+    },
+    "standard_reconnection_request": {
+      "title": "Standard Reconnection Request",
+      "text": "Request routine reconnection during standard service hours.",
+      "links": [
+        {"link_id": "standard_reconnection_restoration", "label": "Restoration and Reconnection", "href_slug": "/utilities/service-interruptions/restoration", "role": "link", "aria_label": "Return to restoration and reconnection", "preview_text": "Back to the restoration overview.", "destination_page_id": "restoration_reconnection"}
+      ]
+    },
+    "life_safety_restoration": {
+      "title": "Life-Safety Restoration",
+      "text": "Emergency restoration process for critical medical, accessibility, or public safety situations.",
+      "links": [
+        {"link_id": "life_safety_emergency_restoration", "label": "Emergency Restoration", "href_slug": "/utilities/service-interruptions/restoration/emergency", "role": "link", "aria_label": "Return to emergency restoration", "preview_text": "Back to emergency restoration overview.", "destination_page_id": "emergency_restoration"}
+      ]
+    },
+    "storm_outage_recovery": {
+      "title": "Storm and Outage Recovery",
+      "text": "Large-scale outage restoration updates following storms or infrastructure damage.",
+      "links": [
+        {"link_id": "storm_recovery_emergency_updates", "label": "Emergency Updates", "href_slug": "/emergency", "role": "link", "aria_label": "Return to emergency updates", "preview_text": "Back to emergency notices and city alerts.", "destination_page_id": "emergency_updates"}
+      ]
+    },
+    "after_hours_eligibility_checklist": {
+      "title": "After-Hours Eligibility Checklist",
+      "text": "Checklist covering same-day payment, account verification, and supervisor approval for after-hours reversal.",
+      "links": [
+        {"link_id": "checklist_after_hours_requests", "label": "After-Hours Reversal Requests", "href_slug": "/utilities/service-interruptions/restoration/emergency/after-hours", "role": "link", "aria_label": "Return to after-hours reversal requests", "preview_text": "Back to the after-hours reversal request hub.", "destination_page_id": "after_hours_reversal_requests"}
+      ]
+    },
+    "account_support": {
+      "title": "Account Support",
+      "text": "Update contact information, resident portal details, and communication preferences.",
+      "links": [
+        {"link_id": "account_support_help_center", "label": "Resident Help Center", "href_slug": "/resident-help", "role": "link", "aria_label": "Return to resident help center", "preview_text": "Back to general resident support.", "destination_page_id": "resident_help_center"}
+      ]
+    },
+    "payment_plan_request": {
+      "title": "Payment Plan Request",
+      "text": "Submit or modify a utility payment plan request.",
+      "links": [
+        {"link_id": "payment_plan_billing", "label": "Billing and Payments", "href_slug": "/utilities/billing", "role": "link", "aria_label": "Return to billing and payments", "preview_text": "Back to billing and payments overview.", "destination_page_id": "billing_and_payments"}
+      ]
+    },
+    "reconnection_forms": {
+      "title": "Reconnection Forms",
+      "text": "Form index for standard reconnection, same-day reconnection, and after-hours service reversal.",
+      "links": [
+        {"link_id": "reconnection_forms_after_hours", "label": "After-Hours Utility Reversal Packet", "href_slug": "/utilities/forms/reconnection/after-hours-packet", "role": "link", "aria_label": "Open after-hours utility reversal packet", "preview_text": "Packet with instructions and links for after-hours reversal-related forms.", "destination_page_id": "after_hours_reversal_packet"},
+        {"link_id": "reconnection_forms_library", "label": "Utility Forms Library", "href_slug": "/utilities/forms", "role": "link", "aria_label": "Return to utility forms library", "preview_text": "Back to the utility forms index.", "destination_page_id": "utility_forms_library"}
+      ]
+    },
+    "after_hours_reversal_packet": {
+      "title": "After-Hours Utility Reversal Packet",
+      "text": "Packet with policy notes, supervisor contacts, and a link to the actual after-hours reversal request area.",
+      "links": [
+        {"link_id": "packet_after_hours_requests", "label": "After-Hours Reversal Requests", "href_slug": "/utilities/service-interruptions/restoration/emergency/after-hours", "role": "link", "aria_label": "Open after-hours reversal requests", "preview_text": "Go to the after-hours reversal request hub.", "destination_page_id": "after_hours_reversal_requests"}
+      ]
+    },
+    "after_hours_shutoff_reversal_form": {
+      "title": "After-Hours Utility Shutoff Reversal Form",
+      "text": "This page contains the official after-hours utility shutoff reversal request form and escalation instructions.",
+      "links": []
+    }
+  }
+}

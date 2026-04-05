@@ -16,7 +16,7 @@ from navis_web_env.server.navis_web_environment import NavisWebEnvironment
 
 def test_reset_returns_expected_initial_observation_for_each_task():
     env = NavisWebEnvironment()
-    for task_id in ("easy", "medium", "hard"):
+    for task_id in ("easy", "medium", "hard", "expert", "adversarial"):
         observation = env.reset(task_id=task_id)
         assert observation.page_id
         assert observation.goal_instruction

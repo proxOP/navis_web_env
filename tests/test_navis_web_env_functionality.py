@@ -96,15 +96,19 @@ def test_loop_cap_termination_sets_reason_and_penalty():
 
 
 def test_task_catalog_and_shortest_paths_are_deterministic():
-    assert list_task_ids() == ["easy", "medium", "hard"]
+    assert list_task_ids() == ["easy", "medium", "hard", "expert", "adversarial"]
 
     easy = load_task("easy")
     medium = load_task("medium")
     hard = load_task("hard")
+    expert = load_task("expert")
+    adversarial = load_task("adversarial")
 
     assert shortest_path_length(easy, easy.start_page_id) == 2
     assert shortest_path_length(medium, medium.start_page_id) == 4
     assert shortest_path_length(hard, hard.start_page_id) == 5
+    assert shortest_path_length(expert, expert.start_page_id) == 6
+    assert shortest_path_length(adversarial, adversarial.start_page_id) == 6
 
 
 def test_http_endpoints_expose_health_schema_and_state():

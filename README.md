@@ -58,11 +58,13 @@ The exported state includes the OpenEnv base metadata plus environment-specific 
 
 ## Tasks
 
-The environment ships with 3 deterministic tasks:
+The environment ships with 5 deterministic tasks:
 
 - `easy`: 2-3 clicks with light distraction and no meaningful loops
 - `medium`: 4-6 clicks with semantically plausible detours
 - `hard`: 6-9 clicks with loops, repeated terminology, and near-target decoys
+- `expert`: 6-step provider-portal workflow with claims/authorization ambiguity and escalation-form decoys
+- `adversarial`: 5-step city-services utility workflow with emergency/outage lookalikes and reversal-form decoys
 
 The tasks are defined under [`navis_web_env/sites`](./navis_web_env/sites).
 
@@ -179,7 +181,7 @@ Example heuristic run:
 python inference.py
 ```
 
-Both modes run all 3 tasks in fixed order and save a reproducible report to `outputs/evals/baseline.json`.
+Both modes run all tasks in fixed order and save a reproducible report to `outputs/evals/baseline.json`.
 
 ## Expected Baseline Outputs
 

@@ -48,6 +48,8 @@ TASK_FILE_MAP = {
     "easy": SITES_DIR / "site_easy.json",
     "medium": SITES_DIR / "site_medium.json",
     "hard": SITES_DIR / "site_hard.json",
+    "expert": SITES_DIR / "site_expert.json",
+    "adversarial": SITES_DIR / "site_adversarial.json",
 }
 
 

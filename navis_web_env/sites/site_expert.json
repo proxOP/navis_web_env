@@ -1,0 +1,133 @@
+{
+  "task_id": "expert",
+  "goal_instruction": "You are on the HarborCare Provider Portal. Reach the Prior Authorization Escalation Worksheet page.",
+  "start_page_id": "provider_home",
+  "target_page_id": "prior_auth_escalation_worksheet",
+  "max_steps": 12,
+  "distractor_taxonomy": ["claims vs authorization ambiguity", "appeals lookalikes", "payer-policy detours", "near-target escalation decoys"],
+  "pages": {
+    "provider_home": {
+      "title": "HarborCare Provider Portal",
+      "text": "HarborCare Provider Portal supports clinical teams with authorizations, claims, provider policies, and urgent case workflows.",
+      "links": [
+        {"link_id": "provider_auth", "label": "Authorizations", "href_slug": "/authorizations", "role": "link", "aria_label": "Open authorizations", "preview_text": "Prior auth status, requests, and escalations.", "destination_page_id": "authorizations"},
+        {"link_id": "provider_claims", "label": "Claims and Appeals", "href_slug": "/claims-appeals", "role": "link", "aria_label": "Open claims and appeals", "preview_text": "Claim corrections, reconsiderations, and appeals.", "destination_page_id": "claims_appeals"},
+        {"link_id": "provider_policy", "label": "Coverage Policies", "href_slug": "/policies", "role": "link", "aria_label": "Open coverage policies", "preview_text": "Medical necessity and plan policy documents.", "destination_page_id": "coverage_policies"}
+      ]
+    },
+    "authorizations": {
+      "title": "Authorizations",
+      "text": "Authorizations includes new requests, status checks, peer-to-peer support, and escalation resources for urgent prior auth cases.",
+      "links": [
+        {"link_id": "auth_prior_auth", "label": "Prior Authorization Center", "href_slug": "/authorizations/prior-auth", "role": "link", "aria_label": "Open prior authorization center", "preview_text": "Status, submissions, missing documentation, and urgent escalations.", "destination_page_id": "prior_authorization_center"},
+        {"link_id": "auth_claims", "label": "Claims and Appeals", "href_slug": "/claims-appeals", "role": "link", "aria_label": "Open claims and appeals", "preview_text": "Claim review and formal appeal workflows.", "destination_page_id": "claims_appeals"},
+        {"link_id": "auth_policy", "label": "Authorization Policies", "href_slug": "/authorizations/policies", "role": "link", "aria_label": "Open authorization policies", "preview_text": "Medical review criteria and authorization rules.", "destination_page_id": "authorization_policies"}
+      ]
+    },
+    "prior_authorization_center": {
+      "title": "Prior Authorization Center",
+      "text": "Use the Prior Authorization Center for status checks, urgent requests, peer-to-peer review, and clinical escalation support.",
+      "links": [
+        {"link_id": "prior_status", "label": "Status and Documentation", "href_slug": "/authorizations/prior-auth/status", "role": "link", "aria_label": "Open status and documentation", "preview_text": "Check pending cases and submit missing clinical notes.", "destination_page_id": "status_and_documentation"},
+        {"link_id": "prior_exception", "label": "Exception and Escalation Requests", "href_slug": "/authorizations/prior-auth/exceptions", "role": "link", "aria_label": "Open exception and escalation requests", "preview_text": "Case exceptions, urgent escalation, and escalation forms.", "destination_page_id": "exception_escalation_requests"},
+        {"link_id": "prior_policy", "label": "Coverage Policies", "href_slug": "/policies", "role": "link", "aria_label": "Open coverage policies", "preview_text": "Review plan coverage rules before escalating.", "destination_page_id": "coverage_policies"}
+      ]
+    },
+    "exception_escalation_requests": {
+      "title": "Exception and Escalation Requests",
+      "text": "Submit network exceptions, urgent case escalations, medical necessity escalations, and prior authorization escalation forms.",
+      "links": [
+        {"link_id": "exceptions_clinical", "label": "Clinical Escalation Forms", "href_slug": "/authorizations/prior-auth/exceptions/clinical", "role": "link", "aria_label": "Open clinical escalation forms", "preview_text": "Clinical review escalation forms by workflow type.", "destination_page_id": "clinical_escalation_forms"},
+        {"link_id": "exceptions_network", "label": "Network Exception Request", "href_slug": "/authorizations/prior-auth/exceptions/network", "role": "link", "aria_label": "Open network exception request", "preview_text": "Out-of-network exception submissions.", "destination_page_id": "network_exception_request"},
+        {"link_id": "exceptions_claims", "label": "Appeals Intake", "href_slug": "/claims-appeals/appeals", "role": "link", "aria_label": "Open appeals intake", "preview_text": "Formal appeals after a claim or auth denial.", "destination_page_id": "appeals_intake"}
+      ]
+    },
+    "clinical_escalation_forms": {
+      "title": "Clinical Escalation Forms",
+      "text": "Clinical escalation forms cover peer-to-peer escalation, expedited review, prior authorization escalation, and inpatient review exceptions.",
+      "links": [
+        {"link_id": "clinical_prior_auth", "label": "Prior Authorization Escalation", "href_slug": "/authorizations/prior-auth/exceptions/clinical/prior-auth-escalation", "role": "link", "aria_label": "Open prior authorization escalation", "preview_text": "Forms and worksheets for escalating an existing prior auth request.", "destination_page_id": "prior_auth_escalation"},
+        {"link_id": "clinical_peer_review", "label": "Peer-to-Peer Escalation", "href_slug": "/authorizations/prior-auth/exceptions/clinical/peer-review", "role": "link", "aria_label": "Open peer-to-peer escalation", "preview_text": "Schedule physician reviewer discussions.", "destination_page_id": "peer_review_escalation"},
+        {"link_id": "clinical_exception_requests", "label": "Exception and Escalation Requests", "href_slug": "/authorizations/prior-auth/exceptions", "role": "link", "aria_label": "Return to exception and escalation requests", "preview_text": "Back to the escalation request hub.", "destination_page_id": "exception_escalation_requests"}
+      ]
+    },
+    "prior_auth_escalation": {
+      "title": "Prior Authorization Escalation",
+      "text": "Prior Authorization Escalation includes the escalation checklist, required attachments, worksheet, and submission deadlines.",
+      "links": [
+        {"link_id": "prior_escalation_worksheet", "label": "Prior Authorization Escalation Worksheet", "href_slug": "/authorizations/prior-auth/escalation/worksheet", "role": "link", "aria_label": "Open prior authorization escalation worksheet", "preview_text": "Worksheet required for urgent prior authorization escalation review.", "destination_page_id": "prior_auth_escalation_worksheet"},
+        {"link_id": "prior_escalation_checklist", "label": "Escalation Submission Checklist", "href_slug": "/authorizations/prior-auth/escalation/checklist", "role": "link", "aria_label": "Open escalation submission checklist", "preview_text": "Checklist for documents and contact details before submission.", "destination_page_id": "escalation_submission_checklist"},
+        {"link_id": "prior_escalation_clinical", "label": "Clinical Escalation Forms", "href_slug": "/authorizations/prior-auth/exceptions/clinical", "role": "link", "aria_label": "Return to clinical escalation forms", "preview_text": "Back to the clinical escalation forms index.", "destination_page_id": "clinical_escalation_forms"}
+      ]
+    },
+    "claims_appeals": {
+      "title": "Claims and Appeals",
+      "text": "Claims and Appeals supports reconsiderations, corrected claims, denial appeals, and payment dispute intake.",
+      "links": [
+        {"link_id": "claims_appeals_intake", "label": "Appeals Intake", "href_slug": "/claims-appeals/appeals", "role": "link", "aria_label": "Open appeals intake", "preview_text": "Formal post-decision appeals for denials and disputes.", "destination_page_id": "appeals_intake"},
+        {"link_id": "claims_corrected", "label": "Corrected Claims", "href_slug": "/claims-appeals/corrected-claims", "role": "link", "aria_label": "Open corrected claims", "preview_text": "Resubmit or correct a claim.", "destination_page_id": "corrected_claims"}
+      ]
+    },
+    "coverage_policies": {
+      "title": "Coverage Policies",
+      "text": "Coverage Policies provides medical necessity policies, payer bulletins, and procedure-specific authorization criteria.",
+      "links": [
+        {"link_id": "policy_auth", "label": "Authorizations", "href_slug": "/authorizations", "role": "link", "aria_label": "Open authorizations", "preview_text": "Return to authorization workflows.", "destination_page_id": "authorizations"}
+      ]
+    },
+    "authorization_policies": {
+      "title": "Authorization Policies",
+      "text": "Authorization policies explain when urgent review is allowed and which escalation channels apply.",
+      "links": [
+        {"link_id": "auth_policy_prior_center", "label": "Prior Authorization Center", "href_slug": "/authorizations/prior-auth", "role": "link", "aria_label": "Return to prior authorization center", "preview_text": "Back to status and escalation support.", "destination_page_id": "prior_authorization_center"}
+      ]
+    },
+    "status_and_documentation": {
+      "title": "Status and Documentation",
+      "text": "Check pending case status, upload missing notes, and confirm whether a request is eligible for escalation.",
+      "links": [
+        {"link_id": "status_prior_center", "label": "Prior Authorization Center", "href_slug": "/authorizations/prior-auth", "role": "link", "aria_label": "Return to prior authorization center", "preview_text": "Back to prior auth tools.", "destination_page_id": "prior_authorization_center"}
+      ]
+    },
+    "network_exception_request": {
+      "title": "Network Exception Request",
+      "text": "Submit out-of-network care exception requests when no in-network option is available.",
+      "links": [
+        {"link_id": "network_exception_requests", "label": "Exception and Escalation Requests", "href_slug": "/authorizations/prior-auth/exceptions", "role": "link", "aria_label": "Return to exception and escalation requests", "preview_text": "Back to the escalation request hub.", "destination_page_id": "exception_escalation_requests"}
+      ]
+    },
+    "appeals_intake": {
+      "title": "Appeals Intake",
+      "text": "Submit provider appeals after a claim or prior authorization decision has already been finalized.",
+      "links": [
+        {"link_id": "appeals_claims_home", "label": "Claims and Appeals", "href_slug": "/claims-appeals", "role": "link", "aria_label": "Return to claims and appeals", "preview_text": "Back to claims and appeals overview.", "destination_page_id": "claims_appeals"}
+      ]
+    },
+    "corrected_claims": {
+      "title": "Corrected Claims",
+      "text": "Resubmit claims with corrected coding or billing information.",
+      "links": [
+        {"link_id": "corrected_claims_home", "label": "Claims and Appeals", "href_slug": "/claims-appeals", "role": "link", "aria_label": "Return to claims and appeals", "preview_text": "Back to claims and appeals overview.", "destination_page_id": "claims_appeals"}
+      ]
+    },
+    "peer_review_escalation": {
+      "title": "Peer-to-Peer Escalation",
+      "text": "Request a peer reviewer conversation for a clinical decision still under review.",
+      "links": [
+        {"link_id": "peer_review_clinical", "label": "Clinical Escalation Forms", "href_slug": "/authorizations/prior-auth/exceptions/clinical", "role": "link", "aria_label": "Return to clinical escalation forms", "preview_text": "Back to the escalation forms list.", "destination_page_id": "clinical_escalation_forms"}
+      ]
+    },
+    "escalation_submission_checklist": {
+      "title": "Escalation Submission Checklist",
+      "text": "Checklist covering required chart notes, ordering physician details, and authorization reference numbers.",
+      "links": [
+        {"link_id": "checklist_prior_escalation", "label": "Prior Authorization Escalation", "href_slug": "/authorizations/prior-auth/escalation", "role": "link", "aria_label": "Return to prior authorization escalation", "preview_text": "Back to the escalation overview.", "destination_page_id": "prior_auth_escalation"}
+      ]
+    },
+    "prior_auth_escalation_worksheet": {
+      "title": "Prior Authorization Escalation Worksheet",
+      "text": "This page contains the worksheet required for urgent prior authorization escalation review.",
+      "links": []
+    }
+  }
+}
