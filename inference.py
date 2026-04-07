@@ -36,9 +36,9 @@ def api_base_url() -> str:
 
 
 def api_key() -> str:
-    key = os.getenv("HF_TOKEN")
+    key = os.getenv("OPENAI_API_KEY")
     if not key:
-        raise RuntimeError("HF_TOKEN is required for BASELINE_AGENT=agent.")
+        raise RuntimeError("OPENAI_API_KEY is required for BASELINE_AGENT=agent.")
     return key
 
 
