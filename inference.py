@@ -32,10 +32,7 @@ def agent_mode() -> str:
 
 
 def api_base_url() -> str:
-    url = os.getenv("API_BASE_URL")
-    if not url:
-        raise RuntimeError("API_BASE_URL is required for BASELINE_AGENT=agent.")
-    return url
+    return os.getenv("API_BASE_URL", "https://api.openai.com/v1")
 
 
 def api_key() -> str:
@@ -46,10 +43,7 @@ def api_key() -> str:
 
 
 def model_name() -> str:
-    model = os.getenv("MODEL_NAME")
-    if not model:
-        raise RuntimeError("MODEL_NAME is required.")
-    return model
+    return os.getenv("MODEL_NAME", "gpt-4.1")
 
 
 def build_client() -> Any:
