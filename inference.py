@@ -222,12 +222,9 @@ def run_task(
         success = bool(summary.get("reached_target"))
     except Exception:
         summary = {}
-        score = 0.01
+        score = grade_episode(summary)
     finally:
         log_end(success=success, steps=steps_taken, rewards=rewards)
-
-    # Guarantee score is strictly within (0, 1) as required by the hackathon validator
-    score = max(0.01, min(0.99, float(score)))
 
     return {
         "task_id": _task_id,
@@ -244,8 +241,7 @@ def main() -> None:
 
     results = [run_task(task_id, mode=selected_mode) for task_id in list_task_ids()]
     aggregate = round(sum(r["score"] for r in results) / len(results), 4) if results else 0.01
-    aggregate = max(0.01, min(0.99, aggregate))
-
+    aggregate = round(min(max(aggregate, 0.01), 0.99), 3)
     report = {
         "agent_mode": selected_mode,
         "model": model_label,
