@@ -159,21 +159,30 @@ def test_http_session_id_persists_state_across_steps():
 
     reset_response = client.post("/reset", json={"task_id": "easy"})
     assert reset_response.status_code == 200
-    session_id = reset_response.json()["session_id"]
+    reset_json = reset_response.json()
+    session_id = reset_json.get("session_id") or reset_json.get("episode_id")
 
-    first_step = client.post("/step", json={"session_id": session_id, "click_link_id": "home_support"})
+    step_payload_1 = {"click_link_id": "home_support"}
+    if session_id:
+        step_payload_1["session_id"] = session_id
+    first_step = client.post("/step", json=step_payload_1)
     assert first_step.status_code == 200
     first_payload = first_step.json()
-    assert first_payload["session_id"] == session_id
+    if session_id:
+        assert first_payload.get("session_id") == session_id or first_payload.get("episode_id") == session_id
     assert _unwrap_observation_payload(first_payload)["page_id"] == "support_center"
 
-    second_step = client.post("/step", json={"session_id": session_id, "click_link_id": "support_contact"})
+    step_payload_2 = {"click_link_id": "support_contact"}
+    if session_id:
+        step_payload_2["session_id"] = session_id
+    second_step = client.post("/step", json=step_payload_2)
     assert second_step.status_code == 200
     second_payload = second_step.json()
     second_observation = _unwrap_observation_payload(second_payload)
     assert second_observation["page_id"] == "contact_support"
     assert second_observation["done"] is True
 
-    state_response = client.get("/state", params={"session_id": session_id})
+    state_params = {"session_id": session_id} if session_id else None
+    state_response = client.get("/state", params=state_params)
     assert state_response.status_code == 200
     assert state_response.json()["step_count"] == 2

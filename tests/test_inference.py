@@ -1,4 +1,4 @@
-﻿"""Tests for the baseline inference script."""
+"""Tests for the baseline inference script."""
 
 from __future__ import annotations
 
@@ -40,7 +40,7 @@ def test_run_task_completes_with_mocked_openai_compatible_client():
     result = inference.run_task(client, "fake-model", "easy", mode="agent")
 
     assert result["task_id"] == "easy"
-    assert result["score"] == 1.0
+    assert 0.0 < result["score"] < 1.0
     assert result["summary"]["reached_target"] is True
 
 

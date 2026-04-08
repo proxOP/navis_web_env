@@ -26,3 +26,9 @@ include-package-data = true
 
 [tool.setuptools.packages.find]
 include = ["navis_web_env*"]
+
+[dependency-groups]
+dev = [
+  "pytest>=8.0.0",
+  "pytest-asyncio>=0.23.0",
+]

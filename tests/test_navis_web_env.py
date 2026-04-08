@@ -107,7 +107,7 @@ def test_grader_returns_valid_range_and_prefers_efficient_success():
     inefficient_score = grade_episode(inefficient)
     failure_score = grade_episode(failure)
 
-    assert 0.0 <= optimal_score <= 1.0
-    assert 0.0 <= inefficient_score <= 1.0
+    assert 0.0 < optimal_score < 1.0
+    assert 0.0 < inefficient_score < 1.0
     assert optimal_score > inefficient_score
-    assert failure_score == 0.0
+    assert failure_score == 0.01

@@ -103,10 +103,12 @@ def _tokenize(text: str) -> set[str]:
 
 # ── Action selection ───────────────────────────────────────────────────
 
-def choose_action_with_llm(observation: Any) -> str:
+def choose_action_with_llm(observation: Any, llm_client: Any = None, model_name: str | None = None) -> str:
     prompt = prompt_from_observation(observation)
-    response = client.chat.completions.create(
-        model=MODEL_NAME,
+    _client = llm_client if llm_client is not None else client
+    _model = model_name if model_name is not None else MODEL_NAME
+    response = _client.chat.completions.create(
+        model=_model,
         messages=[
             {"role": "system", "content": "You are a web navigation agent. Respond only with valid JSON."},
             {"role": "user", "content": prompt},
@@ -150,30 +152,58 @@ def choose_action_with_heuristic(observation: Any) -> str:
     return best_link_id
 
 
-def choose_action(observation: Any, mode: str) -> str:
+def choose_action(observation: Any, mode: str, llm_client: Any = None, model_name: str | None = None) -> str:
     if mode == "heuristic":
         return choose_action_with_heuristic(observation)
     if mode == "agent":
-        return choose_action_with_llm(observation)
+        return choose_action_with_llm(observation, llm_client=llm_client, model_name=model_name)
     raise ValueError(f"Unsupported BASELINE_AGENT '{mode}'. Expected 'heuristic' or 'agent'.")
 
 
 # ── Task runner ────────────────────────────────────────────────────────
 
-def run_task(task_id: str, mode: str | None = None) -> dict[str, Any]:
-    selected_mode = mode or agent_mode()
-    model_label = MODEL_NAME if selected_mode == "agent" else "heuristic-semantic-baseline"
-    env = NavisWebEnvironment(default_task_id=task_id)
-    observation = env.reset(task_id=task_id)
+def run_task(
+    llm_client_or_task_id: Any,
+    model_name_or_mode: str | None = None,
+    task_id: str | None = None,
+    *,
+    mode: str | None = None,
+) -> dict[str, Any]:
+    """Run a single task episode and return the graded result.
+
+    Supports two calling conventions:
+      run_task(task_id, mode=...)                          # original positional form
+      run_task(client, model_name, task_id, mode=...)     # injectable client form
+    """
+    # Detect calling convention
+    if task_id is not None:
+        # New form: run_task(client, model_name, task_id, mode=...)
+        _llm_client = llm_client_or_task_id
+        _model_name = model_name_or_mode
+        _task_id = task_id
+        _mode = mode
+    elif isinstance(llm_client_or_task_id, str):
+        # Original form: run_task(task_id, mode=...)
+        _llm_client = None
+        _model_name = None
+        _task_id = llm_client_or_task_id
+        _mode = model_name_or_mode or mode
+    else:
+        raise ValueError("task_id must be a string")
+
+    selected_mode = _mode or agent_mode()
+    model_label = (_model_name or MODEL_NAME) if selected_mode == "agent" else "heuristic-semantic-baseline"
+    env = NavisWebEnvironment(default_task_id=_task_id)
+    observation = env.reset(task_id=_task_id)
     rewards: list[float] = []
     steps_taken = 0
     success = False
 
-    log_start(task=task_id, env=BENCHMARK_NAME, model=model_label)
+    log_start(task=_task_id, env=BENCHMARK_NAME, model=model_label)
 
     try:
         while not observation.done:
-            click_link_id = choose_action(observation, selected_mode)
+            click_link_id = choose_action(observation, selected_mode, llm_client=_llm_client, model_name=_model_name)
             action_error = None if click_link_id != "__invalid_json__" else "invalid_action"
             observation = env.step(NavisWebAction(click_link_id=click_link_id))
             reward = float(observation.reward or 0.0)
@@ -192,12 +222,15 @@ def run_task(task_id: str, mode: str | None = None) -> dict[str, Any]:
         success = bool(summary.get("reached_target"))
     except Exception:
         summary = {}
-        score = 0.0
+        score = 0.01
     finally:
         log_end(success=success, steps=steps_taken, rewards=rewards)
 
+    # Guarantee score is strictly within (0, 1) as required by the hackathon validator
+    score = max(0.01, min(0.99, float(score)))
+
     return {
-        "task_id": task_id,
+        "task_id": _task_id,
         "score": score,
         "summary": summary,
     }
@@ -210,7 +243,8 @@ def main() -> None:
     model_label = MODEL_NAME if selected_mode == "agent" else "heuristic-semantic-baseline"
 
     results = [run_task(task_id, mode=selected_mode) for task_id in list_task_ids()]
-    aggregate = round(sum(r["score"] for r in results) / len(results), 4) if results else 0.0
+    aggregate = round(sum(r["score"] for r in results) / len(results), 4) if results else 0.01
+    aggregate = max(0.01, min(0.99, aggregate))
 
     report = {
         "agent_mode": selected_mode,
