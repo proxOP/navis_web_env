@@ -6,8 +6,8 @@ import argparse
 import asyncio
 from typing import Sequence
 
-from navis_web_env.client import NavisWebEnv
-from navis_web_env.models import NavisWebAction
+from tasks.client import NavisWebEnv
+from tasks.models import NavisWebAction
 
 TASK_PATHS = {
     "easy": {

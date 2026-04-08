@@ -1,0 +1,42 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.12.12, pytest-9.0.3, pluggy-1.6.0
+rootdir: C:\dev\navis_web_env
+configfile: pyproject.toml
+plugins: anyio-4.13.0, asyncio-1.3.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 18 items
+
+tests\test_inference.py ...                                              [ 16%]
+tests\test_navis_web_env.py ........                                     [ 61%]
+tests\test_navis_web_env_functionality.py ......F                        [100%]
+
+================================== FAILURES ===================================
+______________ test_http_session_id_persists_state_across_steps _______________
+
+    def test_http_session_id_persists_state_across_steps():
+        client = TestClient(app)
+        reset_response = client.post("/reset", json={"task_id": "easy"})
+        assert reset_response.status_code == 200
+        reset_json = reset_response.json()
+        session_id = reset_json.get("session_id") or reset_json.get("episode_id")
+    
+        first_step = _post_step(client, "home_support", session_id)
+        assert first_step.status_code == 200
+        first_payload = first_step.json()
+        session_id = first_payload.get("session_id") or first_payload.get("episode_id") or session_id
+        assert _unwrap_observation_payload(first_payload)["page_id"] == "support_center"
+    
+        second_step = _post_step(client, "support_contact", session_id)
+        assert second_step.status_code == 200
+        second_payload = second_step.json()
+        second_observation = _unwrap_observation_payload(second_payload)
+>       assert second_observation["page_id"] == "contact_support"
+E       AssertionError: assert 'home' == 'contact_support'
+E         
+E         - contact_support
+E         + home
+
+tests\test_navis_web_env_functionality.py:222: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_navis_web_env_functionality.py::test_http_session_id_persists_state_across_steps
+======================== 1 failed, 17 passed in 2.67s =========================

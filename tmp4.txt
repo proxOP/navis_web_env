@@ -1,0 +1,76 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.12.12, pytest-9.0.3, pluggy-1.6.0
+rootdir: C:\dev\navis_web_env
+configfile: pyproject.toml
+plugins: anyio-4.13.0, asyncio-1.3.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 7 items
+
+tests\test_navis_web_env_functionality.py ......{'done': False,
+ 'observation': {'available_links': [{'aria_label': 'Open product guides',
+                                      'label': 'Product Guides',
+                                      'link_id': 'home_guides',
+                                      'metadata': {},
+                                      'preview_text': 'Browse documentation '
+                                                      'and setup instructions.',
+                                      'role': 'link'},
+                                     {'aria_label': 'Open the support center',
+                                      'label': 'Support Center',
+                                      'link_id': 'home_support',
+                                      'metadata': {},
+                                      'preview_text': 'Find support articles '
+                                                      'and contact options.',
+                                      'role': 'link'},
+                                     {'aria_label': 'View pricing',
+                                      'label': 'Pricing',
+                                      'link_id': 'home_pricing',
+                                      'metadata': {},
+                                      'preview_text': 'Compare plans and '
+                                                      'billing details.',
+                                      'role': 'link'}],
+                 'goal_instruction': 'You are on the Acorn Docs website. Reach '
+                                     'the Contact Support page.',
+                 'page_id': 'home',
+                 'page_text': 'Welcome to Acorn Docs. You can explore product '
+                              'guides, pricing details, or support resources '
+                              'from here.',
+                 'page_title': 'Acorn Docs Home',
+                 'remaining_steps': 4,
+                 'target_page_title': 'Contact Support',
+                 'visited_count': 1},
+ 'reward': -0.25}
+F
+
+================================== FAILURES ===================================
+______________ test_http_session_id_persists_state_across_steps _______________
+
+    def test_http_session_id_persists_state_across_steps():
+        client = TestClient(app)
+        reset_response = client.post("/reset", json={"task_id": "easy"})
+        assert reset_response.status_code == 200
+        reset_json = reset_response.json()
+        session_id = reset_json.get("session_id") or reset_json.get("episode_id")
+    
+        first_step = _post_step(client, "home_support", session_id)
+        assert first_step.status_code == 200
+        first_payload = first_step.json()
+        if session_id:
+            assert first_payload.get("session_id") == session_id or first_payload.get("episode_id") == session_id
+        assert _unwrap_observation_payload(first_payload)["page_id"] == "support_center"
+    
+        second_step = _post_step(client, "support_contact", session_id)
+        assert second_step.status_code == 200
+        second_payload = second_step.json()
+        second_observation = _unwrap_observation_payload(second_payload)
+        import pprint
+        pprint.pprint(second_payload)
+>       assert second_observation["page_id"] == "contact_support"
+E       AssertionError: assert 'home' == 'contact_support'
+E         
+E         - contact_support
+E         + home
+
+tests\test_navis_web_env_functionality.py:225: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_navis_web_env_functionality.py::test_http_session_id_persists_state_across_steps
+========================= 1 failed, 6 passed in 2.27s =========================

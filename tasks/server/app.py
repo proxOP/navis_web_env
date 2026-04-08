@@ -1,4 +1,4 @@
-﻿"""FastAPI app entrypoint for the Navis web environment."""
+"""FastAPI app entrypoint for the Navis web environment."""
 
 from __future__ import annotations
 
@@ -29,7 +29,7 @@ def root() -> JSONResponse:
 def main(host: str = "0.0.0.0", port: int = 8000) -> None:
     """Run the environment server locally."""
 
-    uvicorn.run("server.app:app", host=host, port=port, reload=False)
+    uvicorn.run("tasks.server.app:app", host=host, port=port, reload=False)
 
 
 if __name__ == "__main__":  # pragma: no cover
