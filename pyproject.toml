@@ -19,13 +19,13 @@ dependencies = [
 ]
 
 [project.scripts]
-server = "navis_web_env.server.app:main"
+server = "tasks.server.app:main"
 
 [tool.setuptools]
 include-package-data = true
 
 [tool.setuptools.packages.find]
-include = ["navis_web_env*"]
+include = ["tasks*"]
 
 [dependency-groups]
 dev = [

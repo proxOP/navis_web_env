@@ -11,10 +11,10 @@ from typing import Any
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from navis_web_env.grading import grade_episode
-from navis_web_env.models import NavisWebAction
-from navis_web_env.server.navis_web_environment import NavisWebEnvironment
-from navis_web_env.site_loader import list_task_ids
+from tasks.grading import grade_episode
+from tasks.models import NavisWebAction
+from tasks.server.navis_web_environment import NavisWebEnvironment
+from tasks.site_loader import list_task_ids
 
 load_dotenv()
 

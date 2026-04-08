@@ -53,7 +53,7 @@ def test_heuristic_policy_completes_easy_task_without_llm():
 
 
 def test_heuristic_selects_support_link_for_easy_start_page():
-    env = inference.NavisWebEnvironment(default_task_id="easy")
+    env = inference.tasks.server.navis_web_environment.NavisWebEnvironment(default_task_id="easy")
     observation = env.reset(task_id="easy")
 
     click_link_id = inference.choose_action_with_heuristic(observation)

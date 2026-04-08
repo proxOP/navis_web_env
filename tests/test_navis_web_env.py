@@ -9,9 +9,9 @@ ROOT = os.path.join(os.path.dirname(__file__), "..")
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from navis_web_env.grading import grade_episode
-from navis_web_env.models import NavisWebAction
-from navis_web_env.server.navis_web_environment import NavisWebEnvironment
+from tasks.grading import grade_episode
+from tasks.models import NavisWebAction
+from tasks.server.navis_web_environment import NavisWebEnvironment
 
 
 def test_reset_returns_expected_initial_observation_for_each_task():
