@@ -1,4 +1,4 @@
-"""Baseline inference runner for the Navis OpenEnv hackathon submission."""
+w"""Baseline inference runner for the Navis OpenEnv hackathon submission."""
 
 from __future__ import annotations
 
@@ -11,10 +11,10 @@ from typing import Any
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from tasks.grading import grade_episode
-from tasks.models import NavisWebAction
-from tasks.server.navis_web_environment import NavisWebEnvironment
-from tasks.site_loader import list_task_ids
+from navis_web_env.grading import grade_episode, normalize_score
+from navis_web_env.models import NavisWebAction
+from navis_web_env.server.navis_web_environment import NavisWebEnvironment
+from navis_web_env.site_loader import list_task_ids
 
 load_dotenv()
 
@@ -22,12 +22,7 @@ load_dotenv()
 API_BASE_URL = os.getenv("API_BASE_URL", "https://api.openai.com/v1")
 MODEL_NAME = os.getenv("MODEL_NAME", "gpt-4.1-mini")
 HF_TOKEN = os.getenv("HF_TOKEN")
-
-if HF_TOKEN is None:
-    raise ValueError("HF_TOKEN environment variable is required")
-
-# ── OpenAI client (uses HF_TOKEN as api_key per guidelines) ────────────
-client = OpenAI(base_url=API_BASE_URL, api_key=HF_TOKEN)
+client: OpenAI | None = OpenAI(base_url=API_BASE_URL, api_key=HF_TOKEN) if HF_TOKEN else None
 
 # ── Constants ───────────────────────────────────────────────────────────
 OUTPUT_DIR = Path("outputs/evals")
@@ -60,9 +55,12 @@ def log_step(step: int, action: str, reward: float, done: bool, error: str | Non
     )
 
 
-def log_end(success: bool, steps: int, rewards: list[float]) -> None:
+def log_end(success: bool, steps: int, rewards: list[float], score: float) -> None:
     rewards_str = ",".join(f"{r:.2f}" for r in rewards)
-    print(f"[END] success={str(success).lower()} steps={steps} rewards={rewards_str}", flush=True)
+    print(
+        f"[END] success={str(success).lower()} steps={steps} score={score:.3f} rewards={rewards_str}",
+        flush=True,
+    )
 
 
 # ── Prompt / parsing helpers ───────────────────────────────────────────
@@ -106,6 +104,8 @@ def _tokenize(text: str) -> set[str]:
 def choose_action_with_llm(observation: Any, llm_client: Any = None, model_name: str | None = None) -> str:
     prompt = prompt_from_observation(observation)
     _client = llm_client if llm_client is not None else client
+    if _client is None:
+        raise ValueError("HF_TOKEN environment variable is required when BASELINE_AGENT=agent")
     _model = model_name if model_name is not None else MODEL_NAME
     response = _client.chat.completions.create(
         model=_model,
@@ -218,13 +218,13 @@ def run_task(
             )
 
         summary = env.get_last_info()
-        score = grade_episode(summary)
+        score = normalize_score(grade_episode(summary))
         success = bool(summary.get("reached_target"))
     except Exception:
         summary = {}
-        score = grade_episode(summary)
+        score = normalize_score(grade_episode(summary))
     finally:
-        log_end(success=success, steps=steps_taken, rewards=rewards)
+        log_end(success=success, steps=steps_taken, rewards=rewards, score=score)
 
     return {
         "task_id": _task_id,
@@ -240,8 +240,7 @@ def main() -> None:
     model_label = MODEL_NAME if selected_mode == "agent" else "heuristic-semantic-baseline"
 
     results = [run_task(task_id, mode=selected_mode) for task_id in list_task_ids()]
-    aggregate = round(sum(r["score"] for r in results) / len(results), 4) if results else 0.01
-    aggregate = round(min(max(aggregate, 0.01), 0.99), 3)
+    aggregate = normalize_score(sum(r["score"] for r in results) / len(results)) if results else normalize_score(0.0)
     report = {
         "agent_mode": selected_mode,
         "model": model_label,

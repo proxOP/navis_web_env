@@ -1,4 +1,9 @@
-# Navis Web Env
+---
+title: Navis Web Env
+sdk: docker
+app_port: 8000
+---
+# Navis Web
 
 Navis Web Env is a deterministic OpenEnv environment for training and evaluating web-navigation agents on a realistic but fully controlled task: moving through mock websites to reach a target page.
 
@@ -66,7 +71,7 @@ The environment ships with 5 deterministic tasks:
 - `expert`: 6-step provider-portal workflow with claims/authorization ambiguity and escalation-form decoys
 - `adversarial`: 5-step city-services utility workflow with emergency/outage lookalikes and reversal-form decoys
 
-The tasks are defined under [`tasks/sites`](./tasks/sites).
+The tasks are defined under [`navis_web_env/sites`](./navis_web_env/sites).
 
 ## Reward Shaping
 
@@ -88,11 +93,11 @@ Episodes terminate on:
 
 ## Graders
 
-Task graders are deterministic project-level functions. They score the final episode summary on `[0.0, 1.0]`:
+Task graders are deterministic project-level functions. They score the final episode summary strictly inside `(0.0, 1.0)`:
 
-- `1.0` for an optimal successful route
-- `0.7-1.0` for successful but inefficient routes
-- `0.0` for failure
+- `0.99` for an optimal successful route
+- `0.7-0.99` for successful but inefficient routes
+- `0.01` for failure
 
 Grader-facing episode summaries include:
 
@@ -121,7 +126,7 @@ uv sync
 Run the server locally:
 
 ```bash
-uv run uvicorn tasks.server.app:app --host 0.0.0.0 --port 8000
+uv run uvicorn navis_web_env.server.app:app --host 0.0.0.0 --port 8000
 ```
 
 For the fallback plain-HTTP path, `POST /reset` now returns a `session_id`. Subsequent `POST /step` and `GET /state` calls should include that `session_id` so episode state is preserved even when requests are handled independently.
@@ -195,10 +200,12 @@ The exact score depends on the selected agent mode and model, but the output rep
 
 ## Hugging Face Spaces Deployment
 
-This environment is designed to deploy as a Docker-backed HF Space tagged `openenv`:
+This environment is deployed as a Docker-backed Hugging Face Space.
 
 1. Validate locally with `openenv validate --verbose`
-2. Push with `openenv push`
-3. Ensure the Space returns healthy responses for `/health`, reset, step, state, metadata, and schema
+2. Create a Docker Space on Hugging Face
+3. Push this repository to the Space repository
+4. Set the required Space variables and secrets: `API_BASE_URL`, `MODEL_NAME`, and `HF_TOKEN`
+5. Ensure the Space responds correctly for `/health`, `/reset`, `/step`, `/state`, `/metadata`, and `/schema`
 
 Because the environment is fully self-contained, deployment does not require access to live websites or external page content.

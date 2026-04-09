@@ -11,22 +11,28 @@ ROOT = os.path.join(os.path.dirname(__file__), "..")
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from tasks.server.app import app
-from tasks.server.navis_web_environment import NavisWebEnvironment
-from tasks.site_loader import list_task_ids, shortest_path_length, load_task
+from navis_web_env.server.app import app
+from navis_web_env.server.navis_web_environment import NavisWebEnvironment
+from navis_web_env.site_loader import list_task_ids, shortest_path_length, load_task
 
 
-def _post_step(client: TestClient, click_link_id: str, session_id: str | None = None):
+def _post_step(client: TestClient, click_link_id: str):
+    response = client.post("/step", json={"click_link_id": click_link_id})
+    if response.status_code == 422:
+        response = client.post("/step", json={"action": {"click_link_id": click_link_id}})
+    return response
+
+
+def _post_step_with_optional_session(client: TestClient, click_link_id: str, session_id: str | None):
     payload = {"click_link_id": click_link_id}
     if session_id:
         payload["session_id"] = session_id
-        
     response = client.post("/step", json=payload)
     if response.status_code == 422:
-        fallback_payload = {"action": {"click_link_id": click_link_id}}
+        action_payload = {"action": {"click_link_id": click_link_id}}
         if session_id:
-            fallback_payload["session_id"] = session_id
-        response = client.post("/step", json=fallback_payload)
+            action_payload["session_id"] = session_id
+        response = client.post("/step", json=action_payload)
     return response
 
 
@@ -157,68 +163,31 @@ def test_http_step_returns_info_summary_on_success():
     info_payload = _unwrap_info_payload(payload)
     assert payload.get("session_id") == session_id
     assert observation_payload["page_id"] in {"support_center", "contact_support"}
-
-
-def test_http_endpoints_expose_health_schema_and_state():
-    client = TestClient(app)
-
-    health_response = client.get("/health")
-    assert health_response.status_code == 200
-    assert health_response.json()["status"] in {"ok", "healthy"}
-
-    schema_response = client.get("/schema")
-    assert schema_response.status_code == 200
-    schema_payload = schema_response.json()
-    assert ("action_schema" in schema_payload and "observation_schema" in schema_payload) or (
-        "action" in schema_payload and "observation" in schema_payload
-    )
-
-    reset_response = client.post("/reset", json={"task_id": "easy"})
-    assert reset_response.status_code == 200
-    reset_payload = reset_response.json()
-    observation_payload = _unwrap_observation_payload(reset_payload)
-    assert observation_payload["page_id"] == "home"
-
-    state_response = client.get("/state")
-    assert state_response.status_code == 200
-    state_payload = state_response.json()
-    assert isinstance(state_payload, dict)
-    assert _looks_like_state(state_payload)
-
-
-def test_http_step_returns_info_summary_on_success():
-    client = TestClient(app)
-    reset_response = client.post("/reset", json={"task_id": "easy"})
-    session_id = reset_response.json().get("session_id")
-    step_response = _post_step(client, "home_support")
-
-    assert step_response.status_code == 200
-    payload = step_response.json()
-    observation_payload = _unwrap_observation_payload(payload)
-    info_payload = _unwrap_info_payload(payload)
-    assert payload.get("session_id") == session_id
-    assert observation_payload["page_id"] in {"support_center", "contact_support"}
     if info_payload:
         assert "grade" in info_payload or "reached_target" in info_payload or "task_id" in info_payload
 
 
-import pytest
-
-@pytest.mark.skip(reason="openenv-core does not persist session IDs in TestClient appropriately locally")
 def test_http_session_id_persists_state_across_steps():
     client = TestClient(app)
+
     reset_response = client.post("/reset", json={"task_id": "easy"})
     assert reset_response.status_code == 200
-    reset_json = reset_response.json()
-    session_id = reset_json.get("session_id") or reset_json.get("episode_id")
+    reset_payload = reset_response.json()
+    session_id = reset_payload.get("session_id") or reset_payload.get("episode_id")
 
-    first_step = _post_step(client, "home_support", session_id)
+    if not session_id:
+        first_step = _post_step_with_optional_session(client, "home_support", None)
+        assert first_step.status_code == 200
+        assert _unwrap_observation_payload(first_step.json())["page_id"] == "support_center"
+        return
+
+    first_step = _post_step_with_optional_session(client, "home_support", session_id)
     assert first_step.status_code == 200
     first_payload = first_step.json()
-    session_id = first_payload.get("session_id") or first_payload.get("episode_id") or session_id
+    assert first_payload.get("session_id") == session_id
     assert _unwrap_observation_payload(first_payload)["page_id"] == "support_center"
 
-    second_step = _post_step(client, "support_contact", session_id)
+    second_step = _post_step_with_optional_session(client, "support_contact", session_id)
     assert second_step.status_code == 200
     second_payload = second_step.json()
     second_observation = _unwrap_observation_payload(second_payload)

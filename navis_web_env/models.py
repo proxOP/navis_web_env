@@ -1,4 +1,4 @@
-"""Typed models for the Navis web wayfinding environment."""
+﻿"""Typed models for the Navis web wayfinding environment."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from typing import Dict, List
 
 from pydantic import Field
 
-from tasks.openenv_compat import Action, Observation, State
+from .openenv_compat import Action, Observation, State
 
 
 class LinkOption(Observation):

@@ -5,6 +5,8 @@ from __future__ import annotations
 import os
 import sys
 from types import SimpleNamespace
+from io import StringIO
+from contextlib import redirect_stdout
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 if ROOT not in sys.path:
@@ -35,6 +37,38 @@ class FakeClient:
         self.chat = SimpleNamespace(completions=FakeCompletions(choices))
 
 
+class BrokenCompletions:
+    def create(self, **_: object) -> SimpleNamespace:
+        raise RuntimeError("upstream completion failure")
+
+
+class BrokenClient:
+    def __init__(self) -> None:
+        self.chat = SimpleNamespace(completions=BrokenCompletions())
+
+
+def test_task_scores_always_stay_strictly_inside_open_interval():
+    failing_result = inference.run_task(None, None, "easy", mode="heuristic")
+
+    assert 0.0 < failing_result["score"] < 1.0
+
+
+def test_aggregate_score_is_clamped_inside_open_interval():
+    assert inference.normalize_score(0.0) == 0.01
+    assert inference.normalize_score(1.0) == 0.99
+
+
+def test_log_end_emits_explicit_clamped_score_for_output_parser():
+    stream = StringIO()
+
+    with redirect_stdout(stream):
+        inference.log_end(success=True, steps=2, rewards=[0.15, 1.0], score=0.99)
+
+    output = stream.getvalue().strip()
+    assert "[END]" in output
+    assert "score=0.990" in output
+
+
 def test_run_task_completes_with_mocked_openai_compatible_client():
     client = FakeClient(["home_support", "support_contact"])
     result = inference.run_task(client, "fake-model", "easy", mode="agent")
@@ -59,3 +93,12 @@ def test_heuristic_selects_support_link_for_easy_start_page():
     click_link_id = inference.choose_action_with_heuristic(observation)
 
     assert click_link_id == "home_support"
+
+
+def test_run_task_keeps_score_in_range_when_agent_client_raises():
+    result = inference.run_task(BrokenClient(), "fake-model", "easy", mode="agent")
+
+    assert result["task_id"] == "easy"
+    assert result["score"] == 0.01
+    assert 0.0 < result["score"] < 1.0
+    assert result["summary"] == {}

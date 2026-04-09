@@ -1,0 +1,32 @@
+{
+  "agent_mode": "agent",
+  "model": "gpt-4.1-mini",
+  "tasks": [
+    {
+      "task_id": "easy",
+      "score": 0.01,
+      "summary": {}
+    },
+    {
+      "task_id": "medium",
+      "score": 0.01,
+      "summary": {}
+    },
+    {
+      "task_id": "hard",
+      "score": 0.01,
+      "summary": {}
+    },
+    {
+      "task_id": "expert",
+      "score": 0.01,
+      "summary": {}
+    },
+    {
+      "task_id": "adversarial",
+      "score": 0.01,
+      "summary": {}
+    }
+  ],
+  "aggregate_score": 0.01
+}
