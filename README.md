@@ -66,7 +66,7 @@ The environment ships with 5 deterministic tasks:
 - `expert`: 6-step provider-portal workflow with claims/authorization ambiguity and escalation-form decoys
 - `adversarial`: 5-step city-services utility workflow with emergency/outage lookalikes and reversal-form decoys
 
-The tasks are defined under [`navis_web_env/sites`](./navis_web_env/sites).
+The tasks are defined under [`tasks/sites`](./tasks/sites).
 
 ## Reward Shaping
 
@@ -121,7 +121,7 @@ uv sync
 Run the server locally:
 
 ```bash
-uv run uvicorn navis_web_env.server.app:app --host 0.0.0.0 --port 8000
+uv run uvicorn tasks.server.app:app --host 0.0.0.0 --port 8000
 ```
 
 For the fallback plain-HTTP path, `POST /reset` now returns a `session_id`. Subsequent `POST /step` and `GET /state` calls should include that `session_id` so episode state is preserved even when requests are handled independently.
