@@ -1,5 +1,5 @@
 ---
-title: Navis Web Env
+title: Navis Web
 sdk: docker
 app_port: 8000
 ---
@@ -160,14 +160,15 @@ docker run -p 8000:8000 navis-web-env
 
 ## Baseline Inference
 
-The hackathon baseline script is at the repo root as [`inference.py`](./inference.py). It supports two agent modes:
+The hackathon baseline script is at the repo root as [`inference.py`](./inference.py). It supports three agent modes:
 
-- `agent` (default): uses the OpenAI-compatible client with `API_BASE_URL`, `MODEL_NAME`, and `HF_TOKEN`
-- `heuristic`: optional fallback mode using token overlap / semantic similarity between the goal and available links
+- `agent` (default): uses the OpenAI-compatible client with `API_BASE_URL`, `MODEL_NAME`, and `HF_TOKEN`, with heuristic fallback if the response is invalid
+- `heuristic`: a stronger local policy that scores link labels, aria text, previews, revisit penalties, and backtracking hints
+- `oracle`: shortest-path ceiling policy for debugging and benchmarking
 
 Environment variables (configured via `.env`):
 
-- `BASELINE_AGENT=agent` or `BASELINE_AGENT=heuristic`
+- `BASELINE_AGENT=agent`, `BASELINE_AGENT=heuristic`, or `BASELINE_AGENT=oracle`
 - `API_BASE_URL` — the LLM API endpoint (only needed for `agent` mode)
 - `MODEL_NAME` — the model identifier (only needed for `agent` mode)
 - `HF_TOKEN` — your API key (only needed for `agent` mode)
@@ -186,7 +187,15 @@ Example heuristic run:
 python inference.py
 ```
 
-Both modes run all tasks in fixed order and save a reproducible report to `outputs/evals/baseline.json`.
+Example oracle run:
+
+```bash
+# Set in .env or export:
+# BASELINE_AGENT=oracle
+python inference.py
+```
+
+All modes run all tasks in fixed order and save a reproducible report to `outputs/evals/baseline.json`.
 
 ## Expected Baseline Outputs
 
@@ -196,7 +205,39 @@ The exact score depends on the selected agent mode and model, but the output rep
 - path taken
 - invalid action count
 - repeat visits
+- trajectory trace
 - aggregate mean score
+
+## Evaluation Dashboard And Trajectory Visualizer
+
+Run the comparison script to benchmark multiple modes and generate judge-friendly artifacts:
+
+```bash
+uv run python scripts/evaluate.py --modes heuristic oracle
+```
+
+This writes:
+
+- `outputs/evals/report.md` — markdown summary with aggregate metrics and per-task tables
+- `outputs/evals/dashboard.html` — lightweight dashboard for quick viewing
+- `outputs/evals/report.json` — machine-readable benchmark comparison output
+- `outputs/evals/trajectories/*.md` — per-task trajectory reports with Mermaid graphs highlighting the visited path
+
+The trajectory artifacts are useful for demos because they show:
+
+- the full task graph
+- the target page
+- the start page
+- the exact path the policy followed
+- where loops or detours appeared
+
+## Testing
+
+Run the full test suite with:
+
+```bash
+uv run --with pytest pytest
+```
 
 ## Hugging Face Spaces Deployment
 

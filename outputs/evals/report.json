@@ -1,0 +1,980 @@
+{
+  "benchmark": "navis_web_env",
+  "modes": [
+    {
+      "agent_mode": "heuristic",
+      "model": "heuristic-semantic-baseline-v2",
+      "tasks": [
+        {
+          "task_id": "easy",
+          "score": 0.99,
+          "summary": {
+            "task_id": "easy",
+            "reached_target": true,
+            "actual_steps": 2,
+            "optimal_steps": 2,
+            "invalid_actions": 0,
+            "repeat_visits": 0,
+            "termination_reason": "target_reached",
+            "path": [
+              "home",
+              "support_center",
+              "contact_support"
+            ],
+            "visited_histogram": {
+              "home": 1,
+              "support_center": 1,
+              "contact_support": 1
+            },
+            "grade": 0.99
+          },
+          "trajectory": [
+            {
+              "step": 0,
+              "page_id": "home",
+              "page_title": "Acorn Docs Home",
+              "available_link_ids": [
+                "home_guides",
+                "home_support",
+                "home_pricing"
+              ],
+              "remaining_steps": 5
+            },
+            {
+              "step": 1,
+              "from_page_id": "home",
+              "page_id": "support_center",
+              "page_title": "Support Center",
+              "chosen_link_id": "home_support",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 4
+            },
+            {
+              "step": 2,
+              "from_page_id": "support_center",
+              "page_id": "contact_support",
+              "page_title": "Contact Support",
+              "chosen_link_id": "support_contact",
+              "reward": 1.0,
+              "done": true,
+              "remaining_steps": 3
+            }
+          ]
+        },
+        {
+          "task_id": "medium",
+          "score": 0.01,
+          "summary": {
+            "task_id": "medium",
+            "reached_target": false,
+            "actual_steps": 8,
+            "optimal_steps": 4,
+            "invalid_actions": 0,
+            "repeat_visits": 4,
+            "termination_reason": "max_steps_exceeded",
+            "path": [
+              "landing",
+              "student_services",
+              "forms_library",
+              "financial_aid_forms",
+              "paying_for_college",
+              "financial_aid_forms",
+              "paying_for_college",
+              "financial_aid_forms",
+              "paying_for_college"
+            ],
+            "visited_histogram": {
+              "landing": 1,
+              "student_services": 1,
+              "forms_library": 1,
+              "financial_aid_forms": 3,
+              "paying_for_college": 3
+            },
+            "grade": 0.01
+          },
+          "trajectory": [
+            {
+              "step": 0,
+              "page_id": "landing",
+              "page_title": "Northstar University",
+              "available_link_ids": [
+                "landing_students",
+                "landing_finances",
+                "landing_campus"
+              ],
+              "remaining_steps": 8
+            },
+            {
+              "step": 1,
+              "from_page_id": "landing",
+              "page_id": "student_services",
+              "page_title": "Student Services",
+              "chosen_link_id": "landing_students",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 7
+            },
+            {
+              "step": 2,
+              "from_page_id": "student_services",
+              "page_id": "forms_library",
+              "page_title": "Forms Library",
+              "chosen_link_id": "students_forms",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 6
+            },
+            {
+              "step": 3,
+              "from_page_id": "forms_library",
+              "page_id": "financial_aid_forms",
+              "page_title": "Financial Aid Forms",
+              "chosen_link_id": "forms_aid",
+              "reward": -0.05,
+              "done": false,
+              "remaining_steps": 5
+            },
+            {
+              "step": 4,
+              "from_page_id": "financial_aid_forms",
+              "page_id": "paying_for_college",
+              "page_title": "Paying for College",
+              "chosen_link_id": "aid_finances",
+              "reward": -0.05,
+              "done": false,
+              "remaining_steps": 4
+            },
+            {
+              "step": 5,
+              "from_page_id": "paying_for_college",
+              "page_id": "financial_aid_forms",
+              "page_title": "Financial Aid Forms",
+              "chosen_link_id": "finances_aid",
+              "reward": -0.15000000000000002,
+              "done": false,
+              "remaining_steps": 3
+            },
+            {
+              "step": 6,
+              "from_page_id": "financial_aid_forms",
+              "page_id": "paying_for_college",
+              "page_title": "Paying for College",
+              "chosen_link_id": "aid_finances",
+              "reward": -0.15000000000000002,
+              "done": false,
+              "remaining_steps": 2
+            },
+            {
+              "step": 7,
+              "from_page_id": "paying_for_college",
+              "page_id": "financial_aid_forms",
+              "page_title": "Financial Aid Forms",
+              "chosen_link_id": "finances_aid",
+              "reward": -0.15000000000000002,
+              "done": false,
+              "remaining_steps": 1
+            },
+            {
+              "step": 8,
+              "from_page_id": "financial_aid_forms",
+              "page_id": "paying_for_college",
+              "page_title": "Paying for College",
+              "chosen_link_id": "aid_finances",
+              "reward": -0.15000000000000002,
+              "done": true,
+              "remaining_steps": 0
+            }
+          ]
+        },
+        {
+          "task_id": "hard",
+          "score": 0.01,
+          "summary": {
+            "task_id": "hard",
+            "reached_target": false,
+            "actual_steps": 8,
+            "optimal_steps": 5,
+            "invalid_actions": 0,
+            "repeat_visits": 5,
+            "termination_reason": "loop_cap_exceeded",
+            "path": [
+              "dashboard",
+              "employee_services",
+              "remote_work",
+              "vpn_access",
+              "remote_work",
+              "vpn_access",
+              "remote_work",
+              "vpn_access",
+              "remote_work"
+            ],
+            "visited_histogram": {
+              "dashboard": 1,
+              "employee_services": 1,
+              "remote_work": 4,
+              "vpn_access": 3
+            },
+            "grade": 0.01
+          },
+          "trajectory": [
+            {
+              "step": 0,
+              "page_id": "dashboard",
+              "page_title": "Orion Enterprise Help",
+              "available_link_ids": [
+                "dash_employee_services",
+                "dash_remote_work",
+                "dash_admin_console"
+              ],
+              "remaining_steps": 11
+            },
+            {
+              "step": 1,
+              "from_page_id": "dashboard",
+              "page_id": "employee_services",
+              "page_title": "Employee Services",
+              "chosen_link_id": "dash_employee_services",
+              "reward": -0.05,
+              "done": false,
+              "remaining_steps": 10
+            },
+            {
+              "step": 2,
+              "from_page_id": "employee_services",
+              "page_id": "remote_work",
+              "page_title": "Remote Work",
+              "chosen_link_id": "employees_remote_work",
+              "reward": -0.05,
+              "done": false,
+              "remaining_steps": 9
+            },
+            {
+              "step": 3,
+              "from_page_id": "remote_work",
+              "page_id": "vpn_access",
+              "page_title": "VPN Access",
+              "chosen_link_id": "remote_vpn",
+              "reward": -0.05,
+              "done": false,
+              "remaining_steps": 8
+            },
+            {
+              "step": 4,
+              "from_page_id": "vpn_access",
+              "page_id": "remote_work",
+              "page_title": "Remote Work",
+              "chosen_link_id": "vpn_remote_work",
+              "reward": -1.3877787807814457e-17,
+              "done": false,
+              "remaining_steps": 7
+            },
+            {
+              "step": 5,
+              "from_page_id": "remote_work",
+              "page_id": "vpn_access",
+              "page_title": "VPN Access",
+              "chosen_link_id": "remote_vpn",
+              "reward": -0.30000000000000004,
+              "done": false,
+              "remaining_steps": 6
+            },
+            {
+              "step": 6,
+              "from_page_id": "vpn_access",
+              "page_id": "remote_work",
+              "page_title": "Remote Work",
+              "chosen_link_id": "vpn_remote_work",
+              "reward": -1.3877787807814457e-17,
+              "done": false,
+              "remaining_steps": 5
+            },
+            {
+              "step": 7,
+              "from_page_id": "remote_work",
+              "page_id": "vpn_access",
+              "page_title": "VPN Access",
+              "chosen_link_id": "remote_vpn",
+              "reward": -0.30000000000000004,
+              "done": false,
+              "remaining_steps": 4
+            },
+            {
+              "step": 8,
+              "from_page_id": "vpn_access",
+              "page_id": "remote_work",
+              "page_title": "Remote Work",
+              "chosen_link_id": "vpn_remote_work",
+              "reward": -0.15000000000000002,
+              "done": true,
+              "remaining_steps": 3
+            }
+          ]
+        },
+        {
+          "task_id": "expert",
+          "score": 0.99,
+          "summary": {
+            "task_id": "expert",
+            "reached_target": true,
+            "actual_steps": 6,
+            "optimal_steps": 6,
+            "invalid_actions": 0,
+            "repeat_visits": 0,
+            "termination_reason": "target_reached",
+            "path": [
+              "provider_home",
+              "authorizations",
+              "prior_authorization_center",
+              "exception_escalation_requests",
+              "clinical_escalation_forms",
+              "prior_auth_escalation",
+              "prior_auth_escalation_worksheet"
+            ],
+            "visited_histogram": {
+              "provider_home": 1,
+              "authorizations": 1,
+              "prior_authorization_center": 1,
+              "exception_escalation_requests": 1,
+              "clinical_escalation_forms": 1,
+              "prior_auth_escalation": 1,
+              "prior_auth_escalation_worksheet": 1
+            },
+            "grade": 0.99
+          },
+          "trajectory": [
+            {
+              "step": 0,
+              "page_id": "provider_home",
+              "page_title": "HarborCare Provider Portal",
+              "available_link_ids": [
+                "provider_auth",
+                "provider_claims",
+                "provider_policy"
+              ],
+              "remaining_steps": 12
+            },
+            {
+              "step": 1,
+              "from_page_id": "provider_home",
+              "page_id": "authorizations",
+              "page_title": "Authorizations",
+              "chosen_link_id": "provider_auth",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 11
+            },
+            {
+              "step": 2,
+              "from_page_id": "authorizations",
+              "page_id": "prior_authorization_center",
+              "page_title": "Prior Authorization Center",
+              "chosen_link_id": "auth_prior_auth",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 10
+            },
+            {
+              "step": 3,
+              "from_page_id": "prior_authorization_center",
+              "page_id": "exception_escalation_requests",
+              "page_title": "Exception and Escalation Requests",
+              "chosen_link_id": "prior_exception",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 9
+            },
+            {
+              "step": 4,
+              "from_page_id": "exception_escalation_requests",
+              "page_id": "clinical_escalation_forms",
+              "page_title": "Clinical Escalation Forms",
+              "chosen_link_id": "exceptions_clinical",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 8
+            },
+            {
+              "step": 5,
+              "from_page_id": "clinical_escalation_forms",
+              "page_id": "prior_auth_escalation",
+              "page_title": "Prior Authorization Escalation",
+              "chosen_link_id": "clinical_prior_auth",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 7
+            },
+            {
+              "step": 6,
+              "from_page_id": "prior_auth_escalation",
+              "page_id": "prior_auth_escalation_worksheet",
+              "page_title": "Prior Authorization Escalation Worksheet",
+              "chosen_link_id": "prior_escalation_worksheet",
+              "reward": 1.0,
+              "done": true,
+              "remaining_steps": 6
+            }
+          ]
+        },
+        {
+          "task_id": "adversarial",
+          "score": 0.99,
+          "summary": {
+            "task_id": "adversarial",
+            "reached_target": true,
+            "actual_steps": 6,
+            "optimal_steps": 6,
+            "invalid_actions": 0,
+            "repeat_visits": 0,
+            "termination_reason": "target_reached",
+            "path": [
+              "city_home",
+              "utilities",
+              "utility_forms_library",
+              "reconnection_forms",
+              "after_hours_reversal_packet",
+              "after_hours_reversal_requests",
+              "after_hours_shutoff_reversal_form"
+            ],
+            "visited_histogram": {
+              "city_home": 1,
+              "utilities": 1,
+              "utility_forms_library": 1,
+              "reconnection_forms": 1,
+              "after_hours_reversal_packet": 1,
+              "after_hours_reversal_requests": 1,
+              "after_hours_shutoff_reversal_form": 1
+            },
+            "grade": 0.99
+          },
+          "trajectory": [
+            {
+              "step": 0,
+              "page_id": "city_home",
+              "page_title": "Rivermark City Services",
+              "available_link_ids": [
+                "city_utilities",
+                "city_resident_help",
+                "city_emergency"
+              ],
+              "remaining_steps": 13
+            },
+            {
+              "step": 1,
+              "from_page_id": "city_home",
+              "page_id": "utilities",
+              "page_title": "Utilities",
+              "chosen_link_id": "city_utilities",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 12
+            },
+            {
+              "step": 2,
+              "from_page_id": "utilities",
+              "page_id": "utility_forms_library",
+              "page_title": "Utility Forms Library",
+              "chosen_link_id": "utilities_forms",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 11
+            },
+            {
+              "step": 3,
+              "from_page_id": "utility_forms_library",
+              "page_id": "reconnection_forms",
+              "page_title": "Reconnection Forms",
+              "chosen_link_id": "forms_reconnection",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 10
+            },
+            {
+              "step": 4,
+              "from_page_id": "reconnection_forms",
+              "page_id": "after_hours_reversal_packet",
+              "page_title": "After-Hours Utility Reversal Packet",
+              "chosen_link_id": "reconnection_forms_after_hours",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 9
+            },
+            {
+              "step": 5,
+              "from_page_id": "after_hours_reversal_packet",
+              "page_id": "after_hours_reversal_requests",
+              "page_title": "After-Hours Reversal Requests",
+              "chosen_link_id": "packet_after_hours_requests",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 8
+            },
+            {
+              "step": 6,
+              "from_page_id": "after_hours_reversal_requests",
+              "page_id": "after_hours_shutoff_reversal_form",
+              "page_title": "After-Hours Utility Shutoff Reversal Form",
+              "chosen_link_id": "after_hours_form",
+              "reward": 1.0,
+              "done": true,
+              "remaining_steps": 7
+            }
+          ]
+        }
+      ],
+      "aggregate_score": 0.598,
+      "success_rate": 0.6,
+      "mean_efficiency": 1.0
+    },
+    {
+      "agent_mode": "oracle",
+      "model": "oracle-shortest-path",
+      "tasks": [
+        {
+          "task_id": "easy",
+          "score": 0.99,
+          "summary": {
+            "task_id": "easy",
+            "reached_target": true,
+            "actual_steps": 2,
+            "optimal_steps": 2,
+            "invalid_actions": 0,
+            "repeat_visits": 0,
+            "termination_reason": "target_reached",
+            "path": [
+              "home",
+              "support_center",
+              "contact_support"
+            ],
+            "visited_histogram": {
+              "home": 1,
+              "support_center": 1,
+              "contact_support": 1
+            },
+            "grade": 0.99
+          },
+          "trajectory": [
+            {
+              "step": 0,
+              "page_id": "home",
+              "page_title": "Acorn Docs Home",
+              "available_link_ids": [
+                "home_guides",
+                "home_support",
+                "home_pricing"
+              ],
+              "remaining_steps": 5
+            },
+            {
+              "step": 1,
+              "from_page_id": "home",
+              "page_id": "support_center",
+              "page_title": "Support Center",
+              "chosen_link_id": "home_support",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 4
+            },
+            {
+              "step": 2,
+              "from_page_id": "support_center",
+              "page_id": "contact_support",
+              "page_title": "Contact Support",
+              "chosen_link_id": "support_contact",
+              "reward": 1.0,
+              "done": true,
+              "remaining_steps": 3
+            }
+          ]
+        },
+        {
+          "task_id": "medium",
+          "score": 0.99,
+          "summary": {
+            "task_id": "medium",
+            "reached_target": true,
+            "actual_steps": 4,
+            "optimal_steps": 4,
+            "invalid_actions": 0,
+            "repeat_visits": 0,
+            "termination_reason": "target_reached",
+            "path": [
+              "landing",
+              "student_services",
+              "forms_library",
+              "tuition_billing_forms",
+              "tuition_appeals_form"
+            ],
+            "visited_histogram": {
+              "landing": 1,
+              "student_services": 1,
+              "forms_library": 1,
+              "tuition_billing_forms": 1,
+              "tuition_appeals_form": 1
+            },
+            "grade": 0.99
+          },
+          "trajectory": [
+            {
+              "step": 0,
+              "page_id": "landing",
+              "page_title": "Northstar University",
+              "available_link_ids": [
+                "landing_students",
+                "landing_finances",
+                "landing_campus"
+              ],
+              "remaining_steps": 8
+            },
+            {
+              "step": 1,
+              "from_page_id": "landing",
+              "page_id": "student_services",
+              "page_title": "Student Services",
+              "chosen_link_id": "landing_students",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 7
+            },
+            {
+              "step": 2,
+              "from_page_id": "student_services",
+              "page_id": "forms_library",
+              "page_title": "Forms Library",
+              "chosen_link_id": "students_forms",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 6
+            },
+            {
+              "step": 3,
+              "from_page_id": "forms_library",
+              "page_id": "tuition_billing_forms",
+              "page_title": "Tuition and Billing Forms",
+              "chosen_link_id": "forms_tuition",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 5
+            },
+            {
+              "step": 4,
+              "from_page_id": "tuition_billing_forms",
+              "page_id": "tuition_appeals_form",
+              "page_title": "Tuition Appeals Form",
+              "chosen_link_id": "tuition_appeals",
+              "reward": 1.0,
+              "done": true,
+              "remaining_steps": 4
+            }
+          ]
+        },
+        {
+          "task_id": "hard",
+          "score": 0.99,
+          "summary": {
+            "task_id": "hard",
+            "reached_target": true,
+            "actual_steps": 5,
+            "optimal_steps": 5,
+            "invalid_actions": 0,
+            "repeat_visits": 0,
+            "termination_reason": "target_reached",
+            "path": [
+              "dashboard",
+              "admin_console",
+              "secure_access",
+              "remote_signin",
+              "reset_guides",
+              "emergency_access_reset_playbook"
+            ],
+            "visited_histogram": {
+              "dashboard": 1,
+              "admin_console": 1,
+              "secure_access": 1,
+              "remote_signin": 1,
+              "reset_guides": 1,
+              "emergency_access_reset_playbook": 1
+            },
+            "grade": 0.99
+          },
+          "trajectory": [
+            {
+              "step": 0,
+              "page_id": "dashboard",
+              "page_title": "Orion Enterprise Help",
+              "available_link_ids": [
+                "dash_employee_services",
+                "dash_remote_work",
+                "dash_admin_console"
+              ],
+              "remaining_steps": 11
+            },
+            {
+              "step": 1,
+              "from_page_id": "dashboard",
+              "page_id": "admin_console",
+              "page_title": "Admin Console",
+              "chosen_link_id": "dash_admin_console",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 10
+            },
+            {
+              "step": 2,
+              "from_page_id": "admin_console",
+              "page_id": "secure_access",
+              "page_title": "Secure Access",
+              "chosen_link_id": "admin_secure_access",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 9
+            },
+            {
+              "step": 3,
+              "from_page_id": "secure_access",
+              "page_id": "remote_signin",
+              "page_title": "Remote Sign-In",
+              "chosen_link_id": "secure_remote_signin",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 8
+            },
+            {
+              "step": 4,
+              "from_page_id": "remote_signin",
+              "page_id": "reset_guides",
+              "page_title": "Reset Guides",
+              "chosen_link_id": "remote_signin_reset_guide",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 7
+            },
+            {
+              "step": 5,
+              "from_page_id": "reset_guides",
+              "page_id": "emergency_access_reset_playbook",
+              "page_title": "Emergency Access Reset Playbook",
+              "chosen_link_id": "guides_emergency_playbook",
+              "reward": 1.0,
+              "done": true,
+              "remaining_steps": 6
+            }
+          ]
+        },
+        {
+          "task_id": "expert",
+          "score": 0.99,
+          "summary": {
+            "task_id": "expert",
+            "reached_target": true,
+            "actual_steps": 6,
+            "optimal_steps": 6,
+            "invalid_actions": 0,
+            "repeat_visits": 0,
+            "termination_reason": "target_reached",
+            "path": [
+              "provider_home",
+              "authorizations",
+              "prior_authorization_center",
+              "exception_escalation_requests",
+              "clinical_escalation_forms",
+              "prior_auth_escalation",
+              "prior_auth_escalation_worksheet"
+            ],
+            "visited_histogram": {
+              "provider_home": 1,
+              "authorizations": 1,
+              "prior_authorization_center": 1,
+              "exception_escalation_requests": 1,
+              "clinical_escalation_forms": 1,
+              "prior_auth_escalation": 1,
+              "prior_auth_escalation_worksheet": 1
+            },
+            "grade": 0.99
+          },
+          "trajectory": [
+            {
+              "step": 0,
+              "page_id": "provider_home",
+              "page_title": "HarborCare Provider Portal",
+              "available_link_ids": [
+                "provider_auth",
+                "provider_claims",
+                "provider_policy"
+              ],
+              "remaining_steps": 12
+            },
+            {
+              "step": 1,
+              "from_page_id": "provider_home",
+              "page_id": "authorizations",
+              "page_title": "Authorizations",
+              "chosen_link_id": "provider_auth",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 11
+            },
+            {
+              "step": 2,
+              "from_page_id": "authorizations",
+              "page_id": "prior_authorization_center",
+              "page_title": "Prior Authorization Center",
+              "chosen_link_id": "auth_prior_auth",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 10
+            },
+            {
+              "step": 3,
+              "from_page_id": "prior_authorization_center",
+              "page_id": "exception_escalation_requests",
+              "page_title": "Exception and Escalation Requests",
+              "chosen_link_id": "prior_exception",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 9
+            },
+            {
+              "step": 4,
+              "from_page_id": "exception_escalation_requests",
+              "page_id": "clinical_escalation_forms",
+              "page_title": "Clinical Escalation Forms",
+              "chosen_link_id": "exceptions_clinical",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 8
+            },
+            {
+              "step": 5,
+              "from_page_id": "clinical_escalation_forms",
+              "page_id": "prior_auth_escalation",
+              "page_title": "Prior Authorization Escalation",
+              "chosen_link_id": "clinical_prior_auth",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 7
+            },
+            {
+              "step": 6,
+              "from_page_id": "prior_auth_escalation",
+              "page_id": "prior_auth_escalation_worksheet",
+              "page_title": "Prior Authorization Escalation Worksheet",
+              "chosen_link_id": "prior_escalation_worksheet",
+              "reward": 1.0,
+              "done": true,
+              "remaining_steps": 6
+            }
+          ]
+        },
+        {
+          "task_id": "adversarial",
+          "score": 0.99,
+          "summary": {
+            "task_id": "adversarial",
+            "reached_target": true,
+            "actual_steps": 6,
+            "optimal_steps": 6,
+            "invalid_actions": 0,
+            "repeat_visits": 0,
+            "termination_reason": "target_reached",
+            "path": [
+              "city_home",
+              "utilities",
+              "service_interruptions",
+              "restoration_reconnection",
+              "emergency_restoration",
+              "after_hours_reversal_requests",
+              "after_hours_shutoff_reversal_form"
+            ],
+            "visited_histogram": {
+              "city_home": 1,
+              "utilities": 1,
+              "service_interruptions": 1,
+              "restoration_reconnection": 1,
+              "emergency_restoration": 1,
+              "after_hours_reversal_requests": 1,
+              "after_hours_shutoff_reversal_form": 1
+            },
+            "grade": 0.99
+          },
+          "trajectory": [
+            {
+              "step": 0,
+              "page_id": "city_home",
+              "page_title": "Rivermark City Services",
+              "available_link_ids": [
+                "city_utilities",
+                "city_resident_help",
+                "city_emergency"
+              ],
+              "remaining_steps": 13
+            },
+            {
+              "step": 1,
+              "from_page_id": "city_home",
+              "page_id": "utilities",
+              "page_title": "Utilities",
+              "chosen_link_id": "city_utilities",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 12
+            },
+            {
+              "step": 2,
+              "from_page_id": "utilities",
+              "page_id": "service_interruptions",
+              "page_title": "Service Interruptions",
+              "chosen_link_id": "utilities_service_interruptions",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 11
+            },
+            {
+              "step": 3,
+              "from_page_id": "service_interruptions",
+              "page_id": "restoration_reconnection",
+              "page_title": "Restoration and Reconnection",
+              "chosen_link_id": "interruptions_restoration",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 10
+            },
+            {
+              "step": 4,
+              "from_page_id": "restoration_reconnection",
+              "page_id": "emergency_restoration",
+              "page_title": "Emergency Restoration",
+              "chosen_link_id": "restoration_emergency",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 9
+            },
+            {
+              "step": 5,
+              "from_page_id": "emergency_restoration",
+              "page_id": "after_hours_reversal_requests",
+              "page_title": "After-Hours Reversal Requests",
+              "chosen_link_id": "emergency_restoration_after_hours",
+              "reward": 0.09999999999999999,
+              "done": false,
+              "remaining_steps": 8
+            },
+            {
+              "step": 6,
+              "from_page_id": "after_hours_reversal_requests",
+              "page_id": "after_hours_shutoff_reversal_form",
+              "page_title": "After-Hours Utility Shutoff Reversal Form",
+              "chosen_link_id": "after_hours_form",
+              "reward": 1.0,
+              "done": true,
+              "remaining_steps": 7
+            }
+          ]
+        }
+      ],
+      "aggregate_score": 0.99,
+      "success_rate": 1.0,
+      "mean_efficiency": 1.0
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 param(
-    [string]$BaseUrl = "https://proxjod-navis-web-env.hf.space",
+    [string]$BaseUrl = "https://adieee5-navis-web-ad.hf.space",
     [string]$TaskId = "easy"
 )
 

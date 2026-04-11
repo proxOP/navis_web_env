@@ -95,10 +95,27 @@ def test_heuristic_selects_support_link_for_easy_start_page():
     assert click_link_id == "home_support"
 
 
-def test_run_task_keeps_score_in_range_when_agent_client_raises():
+def test_run_task_falls_back_to_heuristic_when_agent_client_raises():
     result = inference.run_task(BrokenClient(), "fake-model", "easy", mode="agent")
 
     assert result["task_id"] == "easy"
-    assert result["score"] == 0.01
+    assert result["score"] >= 0.7
     assert 0.0 < result["score"] < 1.0
-    assert result["summary"] == {}
+    assert result["summary"]["reached_target"] is True
+
+
+def test_oracle_mode_reaches_target_optimally():
+    result = inference.run_task("adversarial", mode="oracle")
+
+    assert result["task_id"] == "adversarial"
+    assert result["summary"]["reached_target"] is True
+    assert result["summary"]["actual_steps"] == result["summary"]["optimal_steps"]
+    assert result["score"] == 0.99
+
+
+def test_run_benchmark_comparison_returns_mode_level_metrics():
+    comparison = inference.run_benchmark_comparison(["heuristic", "oracle"])
+
+    assert comparison["benchmark"] == "navis_web_env"
+    assert [mode_report["agent_mode"] for mode_report in comparison["modes"]] == ["heuristic", "oracle"]
+    assert all(0.0 < mode_report["aggregate_score"] < 1.0 for mode_report in comparison["modes"])

@@ -1,0 +1,33 @@
+[START] task=easy env=navis_web_env model=oracle-shortest-path
+[STEP] step=1 action=home_support reward=0.10 done=false error=null
+[STEP] step=2 action=support_contact reward=1.00 done=true error=null
+[END] success=true steps=2 score=0.990 rewards=0.10,1.00
+[START] task=medium env=navis_web_env model=oracle-shortest-path
+[STEP] step=1 action=landing_students reward=0.10 done=false error=null
+[STEP] step=2 action=students_forms reward=0.10 done=false error=null
+[STEP] step=3 action=forms_tuition reward=0.10 done=false error=null
+[STEP] step=4 action=tuition_appeals reward=1.00 done=true error=null
+[END] success=true steps=4 score=0.990 rewards=0.10,0.10,0.10,1.00
+[START] task=hard env=navis_web_env model=oracle-shortest-path
+[STEP] step=1 action=dash_admin_console reward=0.10 done=false error=null
+[STEP] step=2 action=admin_secure_access reward=0.10 done=false error=null
+[STEP] step=3 action=secure_remote_signin reward=0.10 done=false error=null
+[STEP] step=4 action=remote_signin_reset_guide reward=0.10 done=false error=null
+[STEP] step=5 action=guides_emergency_playbook reward=1.00 done=true error=null
+[END] success=true steps=5 score=0.990 rewards=0.10,0.10,0.10,0.10,1.00
+[START] task=expert env=navis_web_env model=oracle-shortest-path
+[STEP] step=1 action=provider_auth reward=0.10 done=false error=null
+[STEP] step=2 action=auth_prior_auth reward=0.10 done=false error=null
+[STEP] step=3 action=prior_exception reward=0.10 done=false error=null
+[STEP] step=4 action=exceptions_clinical reward=0.10 done=false error=null
+[STEP] step=5 action=clinical_prior_auth reward=0.10 done=false error=null
+[STEP] step=6 action=prior_escalation_worksheet reward=1.00 done=true error=null
+[END] success=true steps=6 score=0.990 rewards=0.10,0.10,0.10,0.10,0.10,1.00
+[START] task=adversarial env=navis_web_env model=oracle-shortest-path
+[STEP] step=1 action=city_utilities reward=0.10 done=false error=null
+[STEP] step=2 action=utilities_service_interruptions reward=0.10 done=false error=null
+[STEP] step=3 action=interruptions_restoration reward=0.10 done=false error=null
+[STEP] step=4 action=restoration_emergency reward=0.10 done=false error=null
+[STEP] step=5 action=emergency_restoration_after_hours reward=0.10 done=false error=null
+[STEP] step=6 action=after_hours_form reward=1.00 done=true error=null
+[END] success=true steps=6 score=0.990 rewards=0.10,0.10,0.10,0.10,0.10,1.00

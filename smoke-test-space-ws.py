@@ -86,7 +86,7 @@ async def run(base_url: str, task_id: str) -> int:
 
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Smoke test the live HF Space via OpenEnv client session.")
-    parser.add_argument("--base-url", default="https://proxjod-navis-web-env.hf.space")
+    parser.add_argument("--base-url", default="https://adieee5-navis-web-ad.hf.space")
     parser.add_argument("--task-id", default="easy")
     return parser.parse_args(argv)
 
